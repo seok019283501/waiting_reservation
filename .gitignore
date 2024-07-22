@@ -28,7 +28,7 @@ replay_pid*
 
 /waiting_reservation_be/HELP.md
 /waiting_reservation_be/.gradle
-/waiting_reservation_be/.env
+/waiting_reservation_be/.env*
 /waiting_reservation_be/build/
 /waiting_reservation_be/!gradle/wrapper/gradle-wrapper.jar
 /waiting_reservation_be/!**/src/main/**/build/

@@ -21,7 +21,7 @@
         <logger name="jdbc.resultsettable" level="info" appender-ref="console"></logger>
 
 
-        <root level="info">
+        <root level="debug">
             <appender-ref ref="console" />
         </root>
     </springProfile>
