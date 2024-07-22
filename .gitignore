@@ -22,3 +22,45 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+
+# backend
+
+/waiting_reservation_be/HELP.md
+/waiting_reservation_be/.gradle
+/waiting_reservation_be/.env
+/waiting_reservation_be/build/
+/waiting_reservation_be/!gradle/wrapper/gradle-wrapper.jar
+/waiting_reservation_be/!**/src/main/**/build/
+/waiting_reservation_be/!**/src/test/**/build/
+
+### STS ###
+/waiting_reservation_be/.apt_generated
+/waiting_reservation_be/.classpath
+/waiting_reservation_be/.factorypath
+/waiting_reservation_be/.project
+/waiting_reservation_be/.settings
+/waiting_reservation_be/.springBeans
+/waiting_reservation_be/.sts4-cache
+/waiting_reservation_be/bin/
+/waiting_reservation_be/!**/src/main/**/bin/
+/waiting_reservation_be/!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+/waiting_reservation_be/.idea
+/waiting_reservation_be/*.iws
+/waiting_reservation_be/*.iml
+/waiting_reservation_be/*.ipr
+/waiting_reservation_be/out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/waiting_reservation_be/nbproject/private/
+/waiting_reservation_be/nbbuild/
+/waiting_reservation_be/dist/
+/waiting_reservation_be/nbdist/
+/waiting_reservation_be/.nb-gradle/
+
+### VS Code ###
+/waiting_reservation_be/.vscode/
