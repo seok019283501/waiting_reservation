@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: dev
   application:
     name: waiting_reservation_be
   jpa:
@@ -8,7 +10,7 @@ spring:
       format_sql: true
       dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
 
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
@@ -17,3 +19,6 @@ spring:
     password: ${MYSQL_PASSWORD}
   thymeleaf:
     cache: false
+
+logging:
+  config: classpath:logback-spring.xml

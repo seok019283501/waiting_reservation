@@ -18,17 +18,18 @@ public class UserEntity extends BaseEntity {
     @Column(nullable = false)
     private String username;
     @Column(nullable = false)
+    private String password;
+    @Column(nullable = false)
     private String email;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
     private String phoneNumber;
     @Column(nullable = false)
-    private LocalDateTime createAt;
-    @Column(nullable = false)
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     @Column(nullable = false)
-    private LocalDateTime birth;
+    private String birth;
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Role role;

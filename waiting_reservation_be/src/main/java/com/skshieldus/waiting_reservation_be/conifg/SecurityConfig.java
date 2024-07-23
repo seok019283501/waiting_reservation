@@ -15,8 +15,12 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.authorizeHttpRequests((auth)->{
-                    auth.requestMatchers("/open-api/**").permitAll()
-                            .requestMatchers("/api/admin").hasRole("ADMIN")
+                    auth.requestMatchers(
+                            "/**",
+                                    "/swagger-ui.html",
+                                    "/swagger-ui/**",
+                                    "/v3/api-docs/**",
+                                    "/open-api/**").permitAll()
                             .anyRequest().authenticated();
                 });
         httpSecurity.csrf((auth)->auth.disable());
