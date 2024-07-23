@@ -8,13 +8,13 @@
             </encoder>
         </appender>
 
-        <appender name="console-infolog" class="ch.qos.logback.core.ConsoleAppender">
+        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <Pattern>%d %5p %m%n</Pattern>
             </encoder>
         </appender>
 
-        <logger name="com.skshieldus.waiting_reservation_be" level="trace" appender-ref="console"></logger>
+        <logger name="com.skshieldus.waiting_reservation_be" level="debug" appender-ref="console"></logger>
 
         <logger name="jdbc.sqlonly" level="info" appender-ref="console"></logger>
         <logger name="jdbc.sqltiming" level="info" appender-ref="console"></logger>
