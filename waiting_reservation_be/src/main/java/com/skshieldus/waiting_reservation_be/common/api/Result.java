@@ -15,7 +15,7 @@ public class Result {
     private Integer resultCode;
     private String resultMessage;
     private String resultDescription;
-
+    // 성공
     public static Result OK(){
         return Result.builder()
                 .resultCode(ErrorCode.OK.getErrorCode())
@@ -23,6 +23,7 @@ public class Result {
                 .resultDescription("SUCCESS")
                 .build();
     }
+    //에러 응답
     public static Result ERROR(ErrorCodeIfs errorCodeIfs){
         return Result.builder()
                 .resultCode(errorCodeIfs.getErrorCode())
@@ -30,13 +31,7 @@ public class Result {
                 .resultDescription("ERROR")
                 .build();
     }
-    public static Result ERROR(ErrorCodeIfs errorCodeIfs,Throwable tx){
-        return Result.builder()
-                .resultCode(errorCodeIfs.getErrorCode())
-                .resultMessage(errorCodeIfs.getDescription())
-                .resultDescription(tx.getLocalizedMessage())
-                .build();
-    }
+    //에러 및 설명 응답
     public static Result ERROR(ErrorCodeIfs errorCodeIfs,String description){
         return Result.builder()
                 .resultCode(errorCodeIfs.getErrorCode())
