@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Getter
-public enum ErrorCode {
+public enum ErrorCode implements ErrorCodeIfs{
     //성공
     OK(200,200,"OK"),
     //잘못된 요청

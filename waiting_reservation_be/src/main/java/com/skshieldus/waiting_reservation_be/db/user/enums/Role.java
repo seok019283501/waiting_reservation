@@ -1,4 +1,4 @@
-package com.skshieldus.waiting_reservation_be.common.role;
+package com.skshieldus.waiting_reservation_be.db.user.enums;
 
 import lombok.AllArgsConstructor;
 
