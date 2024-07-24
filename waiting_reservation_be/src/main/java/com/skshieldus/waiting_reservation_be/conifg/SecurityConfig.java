@@ -30,6 +30,16 @@ public class SecurityConfig{
                             .anyRequest().authenticated();
                 });
         httpSecurity.csrf((auth)->auth.disable());
+        httpSecurity.formLogin((auth)->{
+            auth.disable();
+        });
+        httpSecurity.httpBasic((auth)->{
+            auth.disable();
+        });
+        httpSecurity.sessionManagement((auth)->{
+            auth.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        });
+
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
