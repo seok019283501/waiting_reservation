@@ -1,7 +1,8 @@
-package com.skshieldus.waiting_reservation_be.domain.user.entity;
+package com.skshieldus.waiting_reservation_be.db.user.entity;
 
 import com.skshieldus.waiting_reservation_be.common.entity.BaseEntity;
-import com.skshieldus.waiting_reservation_be.common.role.Role;
+import com.skshieldus.waiting_reservation_be.db.user.enums.Role;
+import com.skshieldus.waiting_reservation_be.db.user.enums.State;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,4 +34,6 @@ public class UserEntity extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Role role;
+    @Enumerated(value = EnumType.STRING)
+    private State state;
 }

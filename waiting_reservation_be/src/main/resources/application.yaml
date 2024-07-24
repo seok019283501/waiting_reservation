@@ -12,6 +12,7 @@ spring:
     hibernate:
       ddl-auto: none
 
+#database 설정
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: jdbc:log4jdbc:mysql://localhost:3306/reservation?useUnicode=true&allowPublicKeyRetrieval=true
@@ -20,5 +21,7 @@ spring:
   thymeleaf:
     cache: false
 
+#log 설정
 logging:
   config: classpath:logback-spring.xml
+
