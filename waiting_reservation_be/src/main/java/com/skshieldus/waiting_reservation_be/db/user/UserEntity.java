@@ -14,8 +14,6 @@ import java.util.Collection;
 
 @Data
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "user")
 public class UserEntity extends BaseEntity {
     @Column(nullable = false)

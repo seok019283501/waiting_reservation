@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LoggerAspect {
-    @Pointcut("execution(* com.skshieldus.waiting_reservation_be.domain.*.*.*Controller..*(..)) || execution(* com.skshieldus.waiting_reservation_be.domain.*.*.*ServiceImpl.*(..)) || execution(* com.skshieldus.waiting_reservation_be.domain.*.*.*Mapper.*(..))")
+    @Pointcut("execution(* com.skshieldus.waiting_reservation_be.domain.*.controller..*(..)) || execution(* com.skshieldus.waiting_reservation_be.domain.*.service..*(..)) || execution(* com.skshieldus.waiting_reservation_be.domain.*.mapper..*(..))")
     private void loggerTarget() {
 
     }
