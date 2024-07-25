@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class StoreInfoResponse {
+public class StoreDetailInfoResponse {
     private int id;
     private String storeName;
     private StoreStatus status;
@@ -16,4 +16,5 @@ public class StoreInfoResponse {
     private String address;
     private LocalDateTime createdAt;
     private LocalDateTime openAt;
+    private String businessRegistrationUrl;
 }

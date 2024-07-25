@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.*;
 public class MenuApiController {
     private final MenuService menuService;
 
-    @PostMapping("/{storeId}")
+    @PostMapping("/owner/{storeId}")
     public Api<String> insertMenu(MenuInfoRequest request, @PathVariable int storeId){
         menuService.insertMenu(request, storeId);
         return Api.OK("success");
     }
-    @PutMapping("/{menuId}")
+    @PutMapping("/owner/{menuId}")
     public Api<String> putMenu(MenuInfoRequest request, @PathVariable int menuId){
         menuService.putMenu(request,menuId);
         return Api.OK("success");
     }
-    @DeleteMapping("/{menuId}")
+    @DeleteMapping("/owner/{menuId}")
     public Api<String> deleteMenu(@PathVariable int menuId, @RequestHeader("Authorization") String authorization){
         return Api.OK("success");
     }
