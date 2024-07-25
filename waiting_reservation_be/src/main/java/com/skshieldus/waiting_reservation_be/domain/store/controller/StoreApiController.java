@@ -14,8 +14,8 @@ public class StoreApiController {
     private final StoreService storeService;
 
     @PostMapping("/register")
-    public Api<String> register(StoreRegisterRequest request){
-        storeService.storeRegist(request);
+    public Api<String> register(StoreRegisterRequest request, @RequestHeader("Authorization") String authorization){
+        storeService.storeRegister(request,authorization);
         return Api.OK("success");
     }
 

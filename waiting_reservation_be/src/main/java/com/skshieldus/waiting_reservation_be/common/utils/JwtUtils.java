@@ -23,9 +23,10 @@ import static java.lang.System.getenv;
 public class JwtUtils {
     private Key hmacKey;
     private Long expirationTime;
+    private Map<String,String> env;
 
     public JwtUtils() {
-        Map<String,String> env = getenv();
+        this.env = getenv();
         this.hmacKey = hmacKey = new SecretKeySpec(
                 Base64.getDecoder().decode(env.get("JWT_SECRET_KEY")), SignatureAlgorithm.HS256.getJcaName()
         );
@@ -80,5 +81,4 @@ public class JwtUtils {
 
         return subject != null && username != null && subject.equals(username);
     }
-
 }
