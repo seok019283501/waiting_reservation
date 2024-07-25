@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -22,7 +24,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     //회원 정보 찾기
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity entity = userRepository.findByUsername(username);
+        UserEntity entity = Optional.ofNullable(userRepository.findByUsername(username))
+                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
         log.debug("", entity);
 
         if(entity == null){

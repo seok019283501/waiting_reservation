@@ -24,12 +24,15 @@ public class SecurityConfig{
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.authorizeHttpRequests((auth)->{
-                    auth.requestMatchers("/**",
+                    auth.requestMatchers(
                                     "/swagger-ui.html",
                                     "/swagger-ui/**",
                                     "/v3/api-docs/**").permitAll()
-                            .requestMatchers(HttpMethod.POST,"/open-api/**").permitAll()
-                            .requestMatchers("/api/store/register").hasRole("OWNER")
+                            .requestMatchers("/api/store/owner/register").hasRole("OWNER")
+                            .requestMatchers("/api/menu/owner/**").hasRole("OWNER")
+                            .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                            .requestMatchers("/open-api/**").permitAll()
+
                             .anyRequest().authenticated();
                 });
         //jwt만 사용하는 rest api이기 때문에 모두 disable 시켜준다.
@@ -44,9 +47,6 @@ public class SecurityConfig{
         httpSecurity.sessionManagement((auth)->{
             auth.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         });
-
-        //customUserDetailsService 적용
-        httpSecurity.userDetailsService(customUserDetailsService);
 
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();

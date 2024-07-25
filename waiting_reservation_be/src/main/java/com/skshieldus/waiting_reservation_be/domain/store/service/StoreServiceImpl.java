@@ -9,16 +9,18 @@ import com.skshieldus.waiting_reservation_be.db.store.enums.StoreStatus;
 import com.skshieldus.waiting_reservation_be.db.user.UserEntity;
 import com.skshieldus.waiting_reservation_be.db.user.UserRepository;
 import com.skshieldus.waiting_reservation_be.db.user.enums.Role;
+import com.skshieldus.waiting_reservation_be.domain.store.dto.StoreDetailInfoResponse;
 import com.skshieldus.waiting_reservation_be.domain.store.dto.StoreInfoResponse;
 import com.skshieldus.waiting_reservation_be.domain.store.dto.StoreRegisterRequest;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,10 +34,8 @@ public class StoreServiceImpl implements StoreService{
         StoreEntity entity = new ModelMapper().map(request, StoreEntity.class);
         String token = authorization.substring(7);
         String username = jwtUtils.getSubjectFromToken(token);
-        UserEntity userEntity = userRepository.findByUsernameAndRole(username, Role.ROLE_OWNER);
-        if(userEntity == null){
-            throw new ApiException(ErrorCode.BAD_REQUEST);
-        }
+        UserEntity userEntity = Optional.ofNullable(userRepository.findByUsernameAndRole(username, Role.ROLE_OWNER))
+                .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
         entity.setUsername(username);
         entity.setCreatedAt(LocalDateTime.now());
         entity.setStatus(StoreStatus.STATUS_OFF);
@@ -45,11 +45,31 @@ public class StoreServiceImpl implements StoreService{
 
     @Override
     public StoreInfoResponse info(int storeId) {
-        StoreEntity entity = storeRepository.findById(storeId);
-        if(entity == null){
-            throw new ApiException(ErrorCode.NULL_POINT);
-        }
+        StoreEntity entity = Optional.ofNullable(storeRepository.findById(storeId))
+                .orElseThrow(()-> new ApiException(ErrorCode.BAD_REQUEST));
         StoreInfoResponse response = new ModelMapper().map(entity, StoreInfoResponse.class);
         return response;
+    }
+
+    @Override
+    public List<StoreInfoResponse> storeList() {
+        List<StoreEntity> storeEntityList = storeRepository.findAll();
+        List<StoreInfoResponse> storeListResponses = storeEntityList.stream()
+                .map(this::toResponse).collect(Collectors.toList());
+        return storeListResponses;
+    }
+
+    public StoreInfoResponse toResponse(StoreEntity storeEntity){
+        return Optional.ofNullable(storeEntity)
+                .map((it)->{
+                    return StoreInfoResponse.builder()
+                            .id(storeEntity.getId())
+                            .status(storeEntity.getStatus())
+                            .storeName(storeEntity.getStoreName())
+                            .address(storeEntity.getAddress())
+                            .createdAt(storeEntity.getCreatedAt())
+                            .openAt(storeEntity.getOpenAt())
+                            .build();
+                }).orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
     }
 }

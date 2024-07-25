@@ -3,6 +3,7 @@ package com.skshieldus.waiting_reservation_be.fillter;
 import com.skshieldus.waiting_reservation_be.common.utils.JwtUtils;
 import com.skshieldus.waiting_reservation_be.db.user.UserEntity;
 import com.skshieldus.waiting_reservation_be.db.user.UserRepository;
+import com.skshieldus.waiting_reservation_be.domain.user.dto.CustomUserDetail;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,8 +52,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             UserEntity entity = userRepository.findByUsername(subject);
             log.debug(entity.getUsername());
             if(jwtUtils.validateToken(jwtToken,entity)){ // 조회한 정보가 맞을 경우 새로운 토큰을 만든다.
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(entity, null, null);
-                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource());
+                CustomUserDetail customUserDetail = new CustomUserDetail(entity);
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(customUserDetail, null, customUserDetail.getAuthorities());
+                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }else{
                 SecurityContextHolder.getContext().setAuthentication(null);
