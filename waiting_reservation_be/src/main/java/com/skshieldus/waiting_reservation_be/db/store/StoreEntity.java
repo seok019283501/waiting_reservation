@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "store")
+@NoArgsConstructor
+@AllArgsConstructor
 public class StoreEntity extends BaseEntity {
     private String storeName;
     @Enumerated(value = EnumType.STRING)

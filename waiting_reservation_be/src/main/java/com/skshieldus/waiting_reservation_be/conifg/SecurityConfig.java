@@ -30,7 +30,9 @@ public class SecurityConfig{
                                     "/v3/api-docs/**").permitAll()
                             .requestMatchers("/api/store/owner/register").hasRole("OWNER")
                             .requestMatchers("/api/menu/owner/**").hasRole("OWNER")
+                            .requestMatchers("/api/reservation/list/**").hasRole("OWNER")
                             .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                            .requestMatchers("/api/reservation/**").hasAnyRole("ADMIN","OWNER","USER")
                             .requestMatchers("/open-api/**").permitAll()
 
                             .anyRequest().authenticated();

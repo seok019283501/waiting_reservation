@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
-public class AdminApiContoller {
+public class AdminApiController {
     private final AdminService adminService;
 
     //식당 등록 허가
