@@ -1,12 +1,11 @@
 package com.skshieldus.waiting_reservation_be.common.utils;
 
-import com.skshieldus.waiting_reservation_be.db.user.entity.UserEntity;
+import com.skshieldus.waiting_reservation_be.db.user.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -24,9 +23,10 @@ import static java.lang.System.getenv;
 public class JwtUtils {
     private Key hmacKey;
     private Long expirationTime;
+    private Map<String,String> env;
 
     public JwtUtils() {
-        Map<String,String> env = getenv();
+        this.env = getenv();
         this.hmacKey = hmacKey = new SecretKeySpec(
                 Base64.getDecoder().decode(env.get("JWT_SECRET_KEY")), SignatureAlgorithm.HS256.getJcaName()
         );
@@ -81,5 +81,4 @@ public class JwtUtils {
 
         return subject != null && username != null && subject.equals(username);
     }
-
 }

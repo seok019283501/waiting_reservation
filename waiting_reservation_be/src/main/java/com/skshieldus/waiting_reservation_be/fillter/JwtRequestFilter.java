@@ -1,8 +1,8 @@
 package com.skshieldus.waiting_reservation_be.fillter;
 
 import com.skshieldus.waiting_reservation_be.common.utils.JwtUtils;
-import com.skshieldus.waiting_reservation_be.db.user.entity.UserEntity;
-import com.skshieldus.waiting_reservation_be.db.user.repository.UserRepository;
+import com.skshieldus.waiting_reservation_be.db.user.UserEntity;
+import com.skshieldus.waiting_reservation_be.db.user.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,9 +37,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String subject = null;
         //Authorization 요청 헤더 존재 여부를 확인하고, 헤더 정보를 추출
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-//    authorizationHeader의 값이 Bearer로 시작하는지 확인 후 추출
+        //    authorizationHeader의 값이 Bearer로 시작하는지 확인 후 추출
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
-            jwtToken = authorizationHeader.substring(7); // "Bearer 이후의 값
+            jwtToken = authorizationHeader.substring(7);
             subject = jwtUtils.getSubjectFromToken(jwtToken);
 
         }else{

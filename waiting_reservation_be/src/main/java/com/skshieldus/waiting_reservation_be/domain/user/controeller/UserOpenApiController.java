@@ -1,14 +1,10 @@
 package com.skshieldus.waiting_reservation_be.domain.user.controeller;
 
 import com.skshieldus.waiting_reservation_be.common.api.Api;
-import com.skshieldus.waiting_reservation_be.common.error.ErrorCode;
-import com.skshieldus.waiting_reservation_be.common.utils.JwtUtils;
 import com.skshieldus.waiting_reservation_be.db.user.enums.Role;
 import com.skshieldus.waiting_reservation_be.domain.user.dto.LoginRequest;
 import com.skshieldus.waiting_reservation_be.domain.user.dto.LoginResponse;
 import com.skshieldus.waiting_reservation_be.domain.user.dto.RegisterRequest;
-import com.skshieldus.waiting_reservation_be.db.user.entity.UserEntity;
-import com.skshieldus.waiting_reservation_be.domain.user.service.CustomUserDetailsService;
 import com.skshieldus.waiting_reservation_be.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
