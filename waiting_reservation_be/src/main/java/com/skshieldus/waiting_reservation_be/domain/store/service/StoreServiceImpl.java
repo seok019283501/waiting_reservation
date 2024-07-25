@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,10 +33,8 @@ public class StoreServiceImpl implements StoreService{
         StoreEntity entity = new ModelMapper().map(request, StoreEntity.class);
         String token = authorization.substring(7);
         String username = jwtUtils.getSubjectFromToken(token);
-        UserEntity userEntity = userRepository.findByUsernameAndRole(username, Role.ROLE_OWNER);
-        if(userEntity == null){
-            throw new ApiException(ErrorCode.BAD_REQUEST);
-        }
+        UserEntity userEntity = Optional.ofNullable(userRepository.findByUsernameAndRole(username, Role.ROLE_OWNER))
+                .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
         entity.setUsername(username);
         entity.setCreatedAt(LocalDateTime.now());
         entity.setStatus(StoreStatus.STATUS_OFF);
@@ -45,10 +44,8 @@ public class StoreServiceImpl implements StoreService{
 
     @Override
     public StoreInfoResponse info(int storeId) {
-        StoreEntity entity = storeRepository.findById(storeId);
-        if(entity == null){
-            throw new ApiException(ErrorCode.NULL_POINT);
-        }
+        StoreEntity entity = Optional.ofNullable(storeRepository.findById(storeId))
+                .orElseThrow(()-> new ApiException(ErrorCode.BAD_REQUEST));
         StoreInfoResponse response = new ModelMapper().map(entity, StoreInfoResponse.class);
         return response;
     }

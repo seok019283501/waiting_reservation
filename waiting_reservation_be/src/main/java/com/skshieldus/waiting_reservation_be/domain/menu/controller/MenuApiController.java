@@ -19,9 +19,13 @@ public class MenuApiController {
         menuService.insertMenu(request, storeId);
         return Api.OK("success");
     }
-    @PutMapping("/{storeId}")
-    public Api<String> putMenu(MenuInfoRequest request, @PathVariable int storeId){
-
+    @PutMapping("/{menuId}")
+    public Api<String> putMenu(MenuInfoRequest request, @PathVariable int menuId){
+        menuService.putMenu(request,menuId);
+        return Api.OK("success");
+    }
+    @DeleteMapping("/{menuId}")
+    public Api<String> deleteMenu(@PathVariable int menuId, @RequestHeader("Authorization") String authorization){
         return Api.OK("success");
     }
 

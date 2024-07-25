@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,6 @@ import java.time.LocalDateTime;
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final AuthenticationManagerBuilder authenticate;
     private final JwtUtils jwtUtils;
     // 회원가입
     @Override
@@ -42,9 +42,10 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
-        UserEntity userEntity = userRepository.findByUsername(loginRequest.getUsername());
+        UserEntity userEntity = Optional.ofNullable(userRepository.findByUsername(loginRequest.getUsername()))
+                .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
         boolean passwordMatch = bCryptPasswordEncoder.matches(loginRequest.getPassword(), userEntity.getPassword());
-        if(userEntity == null || !passwordMatch){
+        if(!passwordMatch){
             throw new ApiException(ErrorCode.BAD_REQUEST);
         }
         LoginResponse loginResponse = LoginResponse.builder()
