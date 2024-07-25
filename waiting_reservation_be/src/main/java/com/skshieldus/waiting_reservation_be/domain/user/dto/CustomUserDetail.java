@@ -1,6 +1,6 @@
 package com.skshieldus.waiting_reservation_be.domain.user.dto;
 
-import com.skshieldus.waiting_reservation_be.db.user.entity.UserEntity;
+import com.skshieldus.waiting_reservation_be.db.user.UserEntity;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

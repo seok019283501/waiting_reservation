@@ -2,8 +2,8 @@ package com.skshieldus.waiting_reservation_be.domain.user.service;
 
 import com.skshieldus.waiting_reservation_be.common.error.ErrorCode;
 import com.skshieldus.waiting_reservation_be.common.exception.ApiException;
-import com.skshieldus.waiting_reservation_be.db.user.entity.UserEntity;
-import com.skshieldus.waiting_reservation_be.db.user.repository.UserRepository;
+import com.skshieldus.waiting_reservation_be.db.user.UserEntity;
+import com.skshieldus.waiting_reservation_be.db.user.UserRepository;
 import com.skshieldus.waiting_reservation_be.domain.user.dto.CustomUserDetail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

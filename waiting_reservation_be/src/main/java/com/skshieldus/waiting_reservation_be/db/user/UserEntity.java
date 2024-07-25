@@ -1,6 +1,7 @@
-package com.skshieldus.waiting_reservation_be.db.user.entity;
+package com.skshieldus.waiting_reservation_be.db.user;
 
 import com.skshieldus.waiting_reservation_be.common.entity.BaseEntity;
+import com.skshieldus.waiting_reservation_be.db.store.StoreEntity;
 import com.skshieldus.waiting_reservation_be.db.user.enums.Role;
 import com.skshieldus.waiting_reservation_be.db.user.enums.State;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 @Data
 @Entity

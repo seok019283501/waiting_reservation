@@ -4,7 +4,6 @@ import com.skshieldus.waiting_reservation_be.db.user.enums.Role;
 import com.skshieldus.waiting_reservation_be.domain.user.dto.LoginRequest;
 import com.skshieldus.waiting_reservation_be.domain.user.dto.LoginResponse;
 import com.skshieldus.waiting_reservation_be.domain.user.dto.RegisterRequest;
-import com.skshieldus.waiting_reservation_be.db.user.entity.UserEntity;
 
 public interface UserService {
     void register(RegisterRequest request, Role role);

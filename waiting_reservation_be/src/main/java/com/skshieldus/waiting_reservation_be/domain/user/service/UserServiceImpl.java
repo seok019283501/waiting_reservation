@@ -7,15 +7,14 @@ import com.skshieldus.waiting_reservation_be.db.user.enums.Role;
 import com.skshieldus.waiting_reservation_be.domain.user.dto.LoginRequest;
 import com.skshieldus.waiting_reservation_be.domain.user.dto.LoginResponse;
 import com.skshieldus.waiting_reservation_be.domain.user.dto.RegisterRequest;
-import com.skshieldus.waiting_reservation_be.db.user.entity.UserEntity;
-import com.skshieldus.waiting_reservation_be.db.user.repository.UserRepository;
+import com.skshieldus.waiting_reservation_be.db.user.UserEntity;
+import com.skshieldus.waiting_reservation_be.db.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,7 @@ import java.time.LocalDateTime;
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final AuthenticationManagerBuilder authenticate;
     private final JwtUtils jwtUtils;
     // 회원가입
     @Override
@@ -49,19 +48,9 @@ public class UserServiceImpl implements UserService{
             throw new ApiException(ErrorCode.BAD_REQUEST);
         }
         LoginResponse loginResponse = LoginResponse.builder()
-                .token(setAuthentication(userEntity))
+                .token(jwtUtils.generateToken(userEntity))
                 .build();
         return loginResponse;
 
-    }
-    //authenticationManagerBuilder의 authenticate을 할 때 CustomUserDetailsService동작
-    private String setAuthentication(UserEntity userEntity) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(userEntity.getUsername(), userEntity.getPassword());
-
-//        authenticationManagerBuilder.getObject()
-//                .authenticate(authenticationToken);
-
-        return jwtUtils.generateToken(userEntity);
     }
 }

@@ -1,12 +1,11 @@
 package com.skshieldus.waiting_reservation_be.common.utils;
 
-import com.skshieldus.waiting_reservation_be.db.user.entity.UserEntity;
+import com.skshieldus.waiting_reservation_be.db.user.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;

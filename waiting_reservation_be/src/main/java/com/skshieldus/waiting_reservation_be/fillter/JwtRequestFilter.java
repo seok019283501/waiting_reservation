@@ -1,8 +1,8 @@
 package com.skshieldus.waiting_reservation_be.fillter;
 
 import com.skshieldus.waiting_reservation_be.common.utils.JwtUtils;
-import com.skshieldus.waiting_reservation_be.db.user.entity.UserEntity;
-import com.skshieldus.waiting_reservation_be.db.user.repository.UserRepository;
+import com.skshieldus.waiting_reservation_be.db.user.UserEntity;
+import com.skshieldus.waiting_reservation_be.db.user.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
