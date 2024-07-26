@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface AdminService {
     //식당 등록 허가
-    void storeStatusChange(int id, StoreStatus status);
+    void storeStatusChange(int id);
     List<StoreInfoResponse> storeList(String type);
 }

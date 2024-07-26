@@ -50,12 +50,30 @@ public class StoreServiceImpl implements StoreService{
         return response;
     }
 
+
     @Override
-    public List<StoreInfoResponse> storeList() {
-        List<StoreEntity> storeEntityList = storeRepository.findAllByStatus(StoreStatus.STATUS_ON);
-        List<StoreInfoResponse> storeListResponses = storeEntityList.stream()
-                .map(this::toResponse).collect(Collectors.toList());
-        return storeListResponses;
+    public List<StoreInfoResponse> storeSearch(String storeName, String address) {
+        List<StoreEntity> storeEntityList = null;
+        log.debug("",storeName,address);
+        if(storeName.equals("none") && address.equals("all")){
+            //전체 리스트 검색
+            storeEntityList = storeRepository.findAllByStatus(StoreStatus.STATUS_ON);
+        } else if (address.equals("all")) {
+            //전체 지역 식당 이름 검색
+            storeEntityList = storeRepository.searchAllStoreName(storeName,StoreStatus.STATUS_ON);
+        }  else if(storeName.equals("none")) {
+            //주소 검색
+            storeEntityList = storeRepository.searchAddress(address,StoreStatus.STATUS_ON);
+        }else{
+            //지역 및 식당 이름 검색
+            storeEntityList = storeRepository.searchStoreNameAndAddress(storeName,address,StoreStatus.STATUS_ON);
+        }
+        List<StoreInfoResponse> responses = null;
+        if(storeEntityList != null){
+            responses = storeEntityList.stream().map(this::toResponse).collect(Collectors.toList());
+        }
+
+        return responses;
     }
 
     public StoreInfoResponse toResponse(StoreEntity storeEntity){
@@ -71,4 +89,9 @@ public class StoreServiceImpl implements StoreService{
                             .build();
                 }).orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
     }
+
+
+
+
+
 }

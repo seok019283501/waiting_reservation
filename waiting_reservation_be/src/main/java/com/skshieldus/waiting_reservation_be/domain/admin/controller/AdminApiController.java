@@ -19,8 +19,8 @@ public class AdminApiController {
 
     //식당 등록 허가
     @PutMapping("/store/{storeId}")
-    public Api<String> storeStatusChange(@PathVariable int storeId, @Parameter StoreStatus status){
-        adminService.storeStatusChange(storeId,status);
+    public Api<String> storeStatusChange(@PathVariable int storeId){
+        adminService.storeStatusChange(storeId);
         return Api.OK("success");
     }
     @GetMapping("/list/{type}")
