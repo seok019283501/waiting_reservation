@@ -59,6 +59,11 @@ public class JwtUtils {
         return claims.getSubject();
     }
 
+    public String getNameFromToken(String token){
+        final Claims claims = getAllClaimsFromToken(token);
+        return String.valueOf(claims.get("name"));
+    }
+
     private Date getExiprationDateFromToken(String token) {
         final Claims claims = getAllClaimsFromToken(token);
         return claims.getExpiration();

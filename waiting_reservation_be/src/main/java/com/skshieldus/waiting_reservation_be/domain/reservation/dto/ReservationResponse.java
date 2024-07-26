@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class ReservationResponse {
     private int id;
     private String username;
+    private String name;
     private int storeId;
     private ReservationStatus status;
     private int remainingCount;

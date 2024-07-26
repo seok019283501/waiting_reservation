@@ -49,4 +49,14 @@ public class ReservationApiController {
         return Api.OK("success");
     }
 
+    //남은 인원 확인
+    @GetMapping("/remain/{storeId}")
+    public Api<ReservationResponse> remain(
+            @PathVariable int storeId,
+            @RequestHeader("Authorization") String authorization
+    ){
+        ReservationResponse response = reservationService.remain(storeId,authorization);
+        return Api.OK(response);
+    }
+
 }
