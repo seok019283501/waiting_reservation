@@ -33,6 +33,7 @@ public class SecurityConfig{
                             .requestMatchers("/api/order/user/**").hasRole("USER")
                             .requestMatchers("api/order/owner").hasRole("OWNER")
                             .requestMatchers("/api/reservation/**").hasAnyRole("ADMIN","OWNER","USER")
+                            .requestMatchers("/api/user/**").hasAnyRole("ADMIN","OWNER","USER")
                             .requestMatchers("/open-api/**").permitAll()
 
                             .anyRequest().authenticated();

@@ -29,6 +29,7 @@ public class StoreServiceImpl implements StoreService{
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
     private final JwtUtils jwtUtils;
+    //식당 등록
     @Override
     public void storeRegister(StoreRegisterRequest request, String authorization) {
         StoreEntity entity = new ModelMapper().map(request, StoreEntity.class);
@@ -42,6 +43,7 @@ public class StoreServiceImpl implements StoreService{
         storeRepository.save(entity);
     }
 
+    //식당 정보
     @Override
     public StoreInfoResponse info(int storeId) {
         StoreEntity entity = Optional.ofNullable(storeRepository.findByIdAndStatus(storeId,StoreStatus.STATUS_ON))
@@ -50,7 +52,7 @@ public class StoreServiceImpl implements StoreService{
         return response;
     }
 
-
+    //식당 검색
     @Override
     public List<StoreInfoResponse> storeSearch(String storeName, String address) {
         List<StoreEntity> storeEntityList = null;
