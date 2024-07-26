@@ -15,17 +15,18 @@ public class MenuApiController {
     private final MenuService menuService;
 
     @PostMapping("/owner/{storeId}")
-    public Api<String> insertMenu(MenuInfoRequest request, @PathVariable int storeId){
-        menuService.insertMenu(request, storeId);
+    public Api<String> insertMenu(MenuInfoRequest request, @PathVariable int storeId, @RequestHeader("Authorization") String authorization){
+        menuService.insertMenu(request, storeId,authorization);
         return Api.OK("success");
     }
-    @PutMapping("/owner/{menuId}")
-    public Api<String> putMenu(MenuInfoRequest request, @PathVariable int menuId){
-        menuService.putMenu(request,menuId);
+    @PutMapping("/owner/{storeId}/{menuId}")
+    public Api<String> putMenu(MenuInfoRequest request,@PathVariable int storeId, @PathVariable int menuId, @RequestHeader("Authorization") String authorization){
+        menuService.putMenu(request,storeId,menuId,authorization);
         return Api.OK("success");
     }
-    @DeleteMapping("/owner/{menuId}")
-    public Api<String> deleteMenu(@PathVariable int menuId, @RequestHeader("Authorization") String authorization){
+    @DeleteMapping("/owner/{storeId}/{menuId}")
+    public Api<String> deleteMenu(@PathVariable int storeId, @PathVariable int menuId, @RequestHeader("Authorization") String authorization){
+        menuService.deleteMenu(storeId,menuId,authorization);
         return Api.OK("success");
     }
 

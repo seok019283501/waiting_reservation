@@ -39,13 +39,12 @@ public class StoreServiceImpl implements StoreService{
         entity.setUsername(username);
         entity.setCreatedAt(LocalDateTime.now());
         entity.setStatus(StoreStatus.STATUS_OFF);
-        var ffff = storeRepository.save(entity);
-        log.debug("",ffff);
+        storeRepository.save(entity);
     }
 
     @Override
     public StoreInfoResponse info(int storeId) {
-        StoreEntity entity = Optional.ofNullable(storeRepository.findById(storeId))
+        StoreEntity entity = Optional.ofNullable(storeRepository.findByIdAndStatus(storeId,StoreStatus.STATUS_ON))
                 .orElseThrow(()-> new ApiException(ErrorCode.BAD_REQUEST));
         StoreInfoResponse response = new ModelMapper().map(entity, StoreInfoResponse.class);
         return response;
@@ -53,7 +52,7 @@ public class StoreServiceImpl implements StoreService{
 
     @Override
     public List<StoreInfoResponse> storeList() {
-        List<StoreEntity> storeEntityList = storeRepository.findAll();
+        List<StoreEntity> storeEntityList = storeRepository.findAllByStatus(StoreStatus.STATUS_ON);
         List<StoreInfoResponse> storeListResponses = storeEntityList.stream()
                 .map(this::toResponse).collect(Collectors.toList());
         return storeListResponses;
