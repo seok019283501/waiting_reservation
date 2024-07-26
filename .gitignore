@@ -64,3 +64,26 @@ replay_pid*
 
 ### VS Code ###
 /waiting_reservation_be/.vscode/
+
+# forntend
+# dependencies
+/waiting_reservation_be/node_modules
+/waiting_reservation_be/.pnp
+/waiting_reservation_be.pnp.js
+
+# testing
+/waiting_reservation_be/coverage
+
+# production
+/waiting_reservation_be/build
+
+# misc
+/waiting_reservation_be/.DS_Store
+/waiting_reservation_be/.env.local
+/waiting_reservation_be/.env.development.local
+/waiting_reservation_be/.env.test.local
+/waiting_reservation_be/.env.production.local
+
+/waiting_reservation_be/npm-debug.log*
+/waiting_reservation_be/yarn-debug.log*
+/waiting_reservation_be/yarn-error.log*

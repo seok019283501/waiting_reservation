@@ -53,9 +53,9 @@ public class UserServiceImpl implements UserService{
             throw new ApiException(ErrorCode.BAD_REQUEST);
         }
 
-        LoginResponse loginResponse = LoginResponse.builder()
-                .token(jwtUtils.generateToken(userEntity))
-                .build();
+
+        LoginResponse loginResponse = new ModelMapper().map(userEntity,LoginResponse.class);
+        loginResponse.setToken(jwtUtils.generateToken(userEntity));
         return loginResponse;
 
     }
