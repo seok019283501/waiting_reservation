@@ -1,5 +1,7 @@
 package com.skshieldus.waiting_reservation_be.fillter;
 
+import com.skshieldus.waiting_reservation_be.common.error.ErrorCode;
+import com.skshieldus.waiting_reservation_be.common.exception.ApiException;
 import com.skshieldus.waiting_reservation_be.common.utils.JwtUtils;
 import com.skshieldus.waiting_reservation_be.db.user.UserEntity;
 import com.skshieldus.waiting_reservation_be.db.user.UserRepository;
@@ -38,14 +40,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String subject = null;
         //Authorization 요청 헤더 존재 여부를 확인하고, 헤더 정보를 추출
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
         //    authorizationHeader의 값이 Bearer로 시작하는지 확인 후 추출
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
             jwtToken = authorizationHeader.substring(7);
             subject = jwtUtils.getSubjectFromToken(jwtToken);
-
+            log.debug("jwt : ",jwtToken);
         }else{
             log.error("Authorization 헤더 누락 또는 토큰 형식 오류");
-            return;
+            throw new ApiException(ErrorCode.UNAUTHORIZED,"Authorization 헤더 누락 또는 토큰 형식 오류");
         }
         // 현재 로그인된 사용자의 username과 토큰에 포함된 username 비교
         if(subject != null && SecurityContextHolder.getContext().getAuthentication() == null){

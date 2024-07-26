@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ApiExceptionHandler {
     @ExceptionHandler(value = ApiException.class)
-    public Api<Object> apiResponseEntity(ApiException apiException){
+    public ResponseEntity<Api<Object>> apiResponseEntity(ApiException apiException){
         log.debug("", apiException);
         ErrorCodeIfs errorCode = apiException.getErrorCodeIfs();
-        return Api.ERROR(errorCode,apiException.getErrorDescription());
+        return ResponseEntity.status(errorCode.getHttpStatusCode())
+                .body(Api.ERROR(errorCode,apiException.getErrorDescription()));
     }
 }

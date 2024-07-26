@@ -10,11 +10,12 @@
   width: 90%;
   height: 90%;
   display: grid;
-  grid-template-rows: 20% 77%;
+  grid-template-rows: 8% 89%;
   grid-row-gap: 3%;
 }
 .WaitingReservationTemplete-top-container{
-  background-color: rgba(255, 255, 255, 0.773);
+  background-color: #C3C8D4;
+  box-shadow: 0px 0px 3px #656565;
   border-radius: 10px;
 
 }
@@ -25,9 +26,18 @@
 }
 .WaitingReservationTemplete-middle-left-container{
   background-color: rgba(255, 255, 255, 0.773);
+  box-shadow: 0px 0px 3px #656565;
   border-radius: 10px;
 }
 .WaitingReservationTemplete-middle-right-container{
   background-color: rgba(255, 255, 255, 0.773);
+  box-shadow: 0px 0px 3px #656565;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.WaitingReservationTemplete-contents-container{
+  width: 90%;
+  height: 90%;
 }
