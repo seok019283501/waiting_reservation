@@ -10,6 +10,7 @@ import com.skshieldus.waiting_reservation_be.db.store.StoreRepository;
 import com.skshieldus.waiting_reservation_be.db.store.enums.StoreStatus;
 import com.skshieldus.waiting_reservation_be.domain.reservation.dto.ReservationRemainResponse;
 import com.skshieldus.waiting_reservation_be.domain.reservation.dto.ReservationResponse;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -28,9 +29,10 @@ public class ReservationServiceImpl implements ReservationService{
     //웨이팅 예약
     @Override
     public ReservationResponse reservation(int storeId, String authorization) {
-        //username
+        //username & name
         String token = authorization.substring(7);
         String username = jwtUtils.getSubjectFromToken(token);
+        String name = jwtUtils.getNameFromToken(token);
         //store 유무 확인
         Optional.ofNullable(storeRepository.findByIdAndStatus(storeId, StoreStatus.STATUS_ON))
                 .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
@@ -57,10 +59,12 @@ public class ReservationServiceImpl implements ReservationService{
 
 
         ReservationResponse response = new ModelMapper().map(newEntity,ReservationResponse.class);
+        response.setName(name);
         response.setRemainingCount(size);
         return response;
     }
 
+    //남은 인원 검색
     @Override
     public List<ReservationRemainResponse> reservationList(int storeId, String authorization) {
         //username
@@ -71,7 +75,6 @@ public class ReservationServiceImpl implements ReservationService{
                 .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
 
         //남은 reservation list
-
         List<ReservationEntity> reservationEntityList = reservationRespository.findAllByStoreIdAndStatus(
                 storeId,
                 ReservationStatus.STATUS_PROCESSING
@@ -84,6 +87,7 @@ public class ReservationServiceImpl implements ReservationService{
         return responses;
     }
 
+    //웨이팅 종료
     @Override
     public void completeReservation(int storeId, int reservationId, String authorization) {
         //username
@@ -105,6 +109,32 @@ public class ReservationServiceImpl implements ReservationService{
         reservationRespository.save(entity);
     }
 
+    //남은 웨이팅 확인
+    @Override
+    public ReservationResponse remain(int storeId, String authorization) {
+        //username
+        String token = authorization.substring(7);
+        String username = jwtUtils.getSubjectFromToken(token);
+        String name = jwtUtils.getNameFromToken(token);
+
+        //웨이팅 확인
+        ReservationEntity entity = Optional.ofNullable(reservationRespository
+                        .findByUsernameAndStoreIdAndStatus(username,storeId,ReservationStatus.STATUS_PROCESSING))
+                        .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST,"웨이팅 중이 아닙니다."));
+
+        //식당 남은 인원 검색
+        List<ReservationEntity> reservationEntityList = reservationRespository
+                .findAllByStoreIdAndStatus(storeId,ReservationStatus.STATUS_PROCESSING);
+        //user 순서까지의 수
+        int count = reservationEntityList.indexOf(entity)+1;
+
+        ReservationResponse response = new ModelMapper().map(entity,ReservationResponse.class);
+        response.setRemainingCount(count);
+
+        return response;
+    }
+
+    //response 전환
     public ReservationRemainResponse toResponse(ReservationEntity entity){
         return Optional.ofNullable(entity)
                 .map(it->{
