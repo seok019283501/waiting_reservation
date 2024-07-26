@@ -23,10 +23,5 @@ public class StoreOpenApiController {
         List<StoreInfoResponse> responses = storeService.storeList();
         return Api.OK(responses);
     }
-    @GetMapping("/{storeId}")
-    public Api<StoreInfoResponse> info(@PathVariable int storeId){
-        StoreInfoResponse response = storeService.info(storeId);
-        return Api.OK(response);
-    }
 
 }

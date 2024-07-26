@@ -48,10 +48,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
         // 현재 로그인된 사용자의 username과 토큰에 포함된 username 비교
-        if(subject != null && SecurityContextHolder.getContext().getAuthentication() == null){ // 로그인이 안됐을 때
+        if(subject != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserEntity entity = userRepository.findByUsername(subject);
             log.debug(entity.getUsername());
-            if(jwtUtils.validateToken(jwtToken,entity)){ // 조회한 정보가 맞을 경우 새로운 토큰을 만든다.
+            if(jwtUtils.validateToken(jwtToken,entity)){
+                //SecurityContextHolder에 userdetail 정보 저장
                 CustomUserDetail customUserDetail = new CustomUserDetail(entity);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(customUserDetail, null, customUserDetail.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

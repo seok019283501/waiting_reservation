@@ -4,4 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MenuRepository extends JpaRepository<MenuEntity,Integer> {
     MenuEntity findById(int id);
+    MenuEntity findByIdAndDeletedYn(int id, String deleteYn);
 }

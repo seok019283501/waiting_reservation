@@ -22,7 +22,7 @@ public class MenuServiceImpl implements MenuService {
     private final JwtUtils jwtUtils;
     //메뉴 추가
     @Override
-    public void insertMenu(MenuInfoRequest request, int storeId) {
+    public void insertMenu(MenuInfoRequest request, int storeId,String authorization) {
         MenuEntity entity = new ModelMapper().map(request,MenuEntity.class);
         entity.setStoreId(storeId);
 
@@ -31,7 +31,13 @@ public class MenuServiceImpl implements MenuService {
 
     //메뉴 수정
     @Override
-    public void putMenu(MenuInfoRequest request, int menuId) {
+    public void putMenu(MenuInfoRequest request,int storeId, int menuId,String authorization) {
+        String token = authorization.substring(7);
+        String username = jwtUtils.getSubjectFromToken(token);
+        //식당 유무 확인 및 owner 확인
+        StoreEntity storeEntity = Optional.ofNullable(storeRepository.findByIdAndUsername(storeId,username))
+                .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
+
         //menu 유무 확인
         Optional.ofNullable(menuRepository.findById(menuId))
                 .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
@@ -42,12 +48,13 @@ public class MenuServiceImpl implements MenuService {
 
     //메뉴 삭제
     @Override
-    public void deleteMenu(int menuId, String authorization) {
-        //식당 유무 확인 및 owner 확인
-        StoreEntity storeEntity = Optional.ofNullable(storeRepository.findById(menuId))
-                .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
+    public void deleteMenu(int storeId, int menuId, String authorization) {
         String token = authorization.substring(7);
         String username = jwtUtils.getSubjectFromToken(token);
+        //식당 유무 확인 및 owner 확인
+        StoreEntity storeEntity = Optional.ofNullable(storeRepository.findByIdAndUsername(storeId,username))
+                .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
+
         if(!username.equals(storeEntity.getUsername())){
             throw new ApiException(ErrorCode.UNAUTHORIZED,"잘못된 사용자입니다.");
         }
@@ -56,4 +63,5 @@ public class MenuServiceImpl implements MenuService {
 
         menuRepository.save(menuEntity);
     }
+
 }

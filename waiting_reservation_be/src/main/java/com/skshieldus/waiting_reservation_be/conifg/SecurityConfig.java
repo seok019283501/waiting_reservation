@@ -1,11 +1,9 @@
 package com.skshieldus.waiting_reservation_be.conifg;
 
-import com.skshieldus.waiting_reservation_be.domain.user.service.CustomUserDetailsService;
 import com.skshieldus.waiting_reservation_be.fillter.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
@@ -19,7 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig{
     private final JwtRequestFilter jwtRequestFilter;
-    private final CustomUserDetailsService customUserDetailsService;
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
@@ -31,7 +28,10 @@ public class SecurityConfig{
                             .requestMatchers("/api/store/owner/register").hasRole("OWNER")
                             .requestMatchers("/api/menu/owner/**").hasRole("OWNER")
                             .requestMatchers("/api/reservation/list/**").hasRole("OWNER")
+                            .requestMatchers("/api/reservation/complete/**").hasRole("OWNER")
                             .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                            .requestMatchers("/api/order/user/**").hasRole("USER")
+                            .requestMatchers("api/order/owner").hasRole("OWNER")
                             .requestMatchers("/api/reservation/**").hasAnyRole("ADMIN","OWNER","USER")
                             .requestMatchers("/open-api/**").permitAll()
 
