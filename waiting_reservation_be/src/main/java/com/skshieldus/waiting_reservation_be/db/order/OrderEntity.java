@@ -18,4 +18,6 @@ public class OrderEntity extends BaseEntity {
     private int storeId;
     private String username;
     private int menuId;
+    private int count;
+    private String deleteYn;
 }

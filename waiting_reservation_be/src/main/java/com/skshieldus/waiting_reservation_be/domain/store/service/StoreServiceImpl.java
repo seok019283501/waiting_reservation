@@ -35,7 +35,7 @@ public class StoreServiceImpl implements StoreService{
         StoreEntity entity = new ModelMapper().map(request, StoreEntity.class);
         String token = authorization.substring(7);
         String username = jwtUtils.getSubjectFromToken(token);
-        UserEntity userEntity = Optional.ofNullable(userRepository.findByUsernameAndRole(username, Role.ROLE_OWNER))
+        Optional.ofNullable(userRepository.findByUsernameAndRole(username, Role.ROLE_OWNER))
                 .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
         entity.setUsername(username);
         entity.setCreatedAt(LocalDateTime.now());
@@ -56,6 +56,7 @@ public class StoreServiceImpl implements StoreService{
     @Override
     public List<StoreInfoResponse> storeSearch(String storeName, String address) {
         List<StoreEntity> storeEntityList = null;
+
         log.debug("",storeName,address);
         if(storeName.equals("none") && address.equals("all")){
             //전체 리스트 검색
@@ -72,6 +73,38 @@ public class StoreServiceImpl implements StoreService{
         }
         List<StoreInfoResponse> responses = null;
         if(storeEntityList != null){
+            responses = storeEntityList.stream().map(this::toResponse).collect(Collectors.toList());
+        }
+
+        return responses;
+    }
+
+    @Override
+    public List<StoreInfoResponse> storeOwnerSearch(String storeName, String address, String authorization) {
+        List<StoreEntity> storeEntityList = null;
+        String token = authorization.substring(7);
+        String username = jwtUtils.getSubjectFromToken(token);
+
+        //사업자 유무 확인
+        Optional.ofNullable(userRepository.findByUsernameAndRole(username, Role.ROLE_OWNER))
+                .orElseThrow(() -> new ApiException(ErrorCode.BAD_REQUEST));
+
+        log.debug("", storeName, address);
+        if (storeName.equals("none") && address.equals("all")) {
+            //전체 리스트 검색
+            storeEntityList = storeRepository.findAllByUsername(username);
+        } else if (address.equals("all")) {
+            //전체 지역 식당 이름 검색
+            storeEntityList = storeRepository.searchAllOwnerStoreName(storeName, username);
+        } else if (storeName.equals("none")) {
+            //주소 검색
+            storeEntityList = storeRepository.searchOwnerAddress(address, username);
+        } else {
+            //지역 및 식당 이름 검색
+            storeEntityList = storeRepository.searchStoreOwnerNameAndAddress(storeName, address, username);
+        }
+        List<StoreInfoResponse> responses = null;
+        if (storeEntityList != null) {
             responses = storeEntityList.stream().map(this::toResponse).collect(Collectors.toList());
         }
 

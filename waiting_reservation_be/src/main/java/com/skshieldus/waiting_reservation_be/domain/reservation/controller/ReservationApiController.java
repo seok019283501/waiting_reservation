@@ -50,13 +50,22 @@ public class ReservationApiController {
     }
 
     //남은 인원 확인
-    @GetMapping("/remain/{storeId}")
-    public Api<ReservationResponse> remain(
+    @GetMapping("/info")
+    public Api<ReservationResponse> info(
+
+            @RequestHeader("Authorization") String authorization
+    ){
+        ReservationResponse response = reservationService.info(authorization);
+        return Api.OK(response);
+    }
+    //예약 정보 확인
+    @GetMapping("/info/{storeId}")
+    public Api<String> check(
             @PathVariable int storeId,
             @RequestHeader("Authorization") String authorization
     ){
-        ReservationResponse response = reservationService.remain(storeId,authorization);
-        return Api.OK(response);
+        reservationService.check(storeId,authorization);
+        return Api.OK("success");
     }
 
 }

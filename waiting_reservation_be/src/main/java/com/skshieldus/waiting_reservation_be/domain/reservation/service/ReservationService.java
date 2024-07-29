@@ -12,5 +12,6 @@ public interface ReservationService {
     List<ReservationRemainResponse> reservationList(int storeId, String authorization);
     void completeReservation(int storeId, int reservationId, String authorization);
 
-    ReservationResponse remain(int storeId, String authorization);
+    ReservationResponse info(String authorization);
+    void check(int storeId, String authorization);
 }

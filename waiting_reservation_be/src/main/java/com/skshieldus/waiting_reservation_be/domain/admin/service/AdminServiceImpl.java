@@ -22,10 +22,10 @@ public class AdminServiceImpl implements AdminService{
 
     //식당 등록 허가
     @Override
-    public void storeStatusChange(int id) {
+    public void storeStatusChange(int id, StoreStatus status) {
         StoreEntity storeEntity = Optional.ofNullable(storeRepository.findById(id))
                 .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
-        storeEntity.setStatus(StoreStatus.STATUS_ON);
+        storeEntity.setStatus(status);
         storeRepository.save(storeEntity);
 
     }

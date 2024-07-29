@@ -1,8 +1,10 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState ,useContext} from 'react';
 import '../../styles/StoreList.css'
 import axios from "axios";
 import StoreListItem from './StoreListItem';
+import WaitingReservationContext from "../provider/WaitingReservationContext";
+import { useNavigate } from 'react-router-dom';
 const StoreList = (props) =>{
   const list = ["전체","서울특별시","경기도","인천광역시","충청남도","충청북도","대전광역시",
     "강원도","제주도","전라북도","전라남도","광주광역시","경상북도","경상남도","부산광역시","울산광역시"];
@@ -11,6 +13,10 @@ const StoreList = (props) =>{
   const [storeName, setStoreName] = useState("");
   const [storeList, setStoreList] = useState([]);
 
+  const {role} = useContext(WaitingReservationContext);
+
+
+  const navigator = useNavigate();
   //주소
   const handleSetAddress= (e) =>{
     setAddress(e.target.value);
@@ -23,23 +29,53 @@ const StoreList = (props) =>{
 
   //식당 검색
   const search = () => {
-    axios.get((`http://localhost:8080/open-api/store/search?${storeName !== '' ? `store_name=${storeName}` : null}&${address !== '전체' ? `address=${address}` : null}`))
-      .then(res=>{
-        setStoreList(res.data.body);
-      }).catch(err=>{
-        console.log(err);
-      })
+    if(role === "ROLE_OWNER"){
+      console.log("ROLE_OWNER")
+    }else{
+      openSearch();
+    }
+    
     
   }
 
   useEffect(()=>{
-    axios.get((`http://localhost:8080/open-api/store/search`))
+    if(role === "ROLE_OWNER"){
+      ownerStoreSearch();
+    }else if(role === "ROLE_ADMIN"){
+      navigator("/admin/store");
+    }else{
+      openSearch();
+
+    }
+
+    
+    
+  },[role])
+
+  //식당 전체 검색
+  const openSearch=()=>{
+    axios.get((`http://localhost:8080/open-api/store/search?${storeName !== '' ? `store_name=${storeName}` : null}&${address !== '전체' ? `address=${address}` : null}`))
     .then(res=>{
       setStoreList(res.data.body);
     }).catch(err=>{
       console.log(err);
     })
-  },[])
+  }
+
+  // 사업자 식당 리스트
+  const ownerStoreSearch=()=>{
+    const tk = localStorage.getItem("jwt")
+    axios.get((`http://localhost:8080/api/store/search?${storeName !== '' ? `store_name=${storeName}` : null}&${address !== '전체' ? `address=${address}` : null}`),{
+      headers:{
+        Authorization: tk
+      }
+    })
+    .then(res=>{
+      setStoreList(res.data.body);
+    }).catch(err=>{
+      console.log(err);
+    })
+  }
   
   return (
     <>

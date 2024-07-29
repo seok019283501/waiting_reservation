@@ -14,4 +14,5 @@ public interface StoreService {
     StoreInfoResponse info(int storeId);
     StoreInfoResponse toResponse(StoreEntity storeEntity);
     List<StoreInfoResponse> storeSearch(String storeName , String address);
+    List<StoreInfoResponse> storeOwnerSearch(String storeName , String address, String authorization);
 }

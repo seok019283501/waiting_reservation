@@ -13,5 +13,7 @@ public class ReservationRemainResponse {
     private String username;
     private int storeId;
     private ReservationStatus status;
+    private String phoneNumber;
+    private String name;
     private LocalDateTime createdAt;
 }

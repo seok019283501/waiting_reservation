@@ -16,6 +16,7 @@ public interface StoreRepository extends JpaRepository<StoreEntity,Integer> {
     List<StoreEntity> findAll();
     List<StoreEntity> findAllByStatus(StoreStatus status);
 
+    //일반
     @Query(value = "SELECT s FROM StoreEntity s WHERE (s.storeName LIKE %:storeName% AND s.address LIKE %:address%) AND s.status= :status")
     List<StoreEntity> searchStoreNameAndAddress(@Param("storeName") String storeName, @Param("address") String  address, @Param("status") StoreStatus status);
 
@@ -24,4 +25,20 @@ public interface StoreRepository extends JpaRepository<StoreEntity,Integer> {
 
     @Query(value = "SELECT s FROM StoreEntity s WHERE s.storeName LIKE %:storeName% AND s.status= :status")
     List<StoreEntity> searchAllStoreName(@Param("storeName") String storeName, @Param("status") StoreStatus status);
+
+
+    //사업자
+    @Query(value = "SELECT s FROM StoreEntity s WHERE (s.storeName LIKE %:storeName% AND s.address LIKE %:address%) AND s.username= :username")
+    List<StoreEntity> searchStoreOwnerNameAndAddress(@Param("storeName") String storeName, @Param("address") String  address, @Param("username") String username);
+
+    @Query(value = "SELECT s FROM StoreEntity s WHERE s.address LIKE %:address% AND s.username= :username")
+    List<StoreEntity> searchOwnerAddress(@Param("address") String  address, @Param("username") String username);
+
+    @Query(value = "SELECT s FROM StoreEntity s WHERE s.storeName LIKE %:storeName% AND s.username= :username")
+    List<StoreEntity> searchAllOwnerStoreName(@Param("storeName") String storeName, @Param("username") String username);
+
+    List<StoreEntity> findAllByUsername(String username);
+
+
+
 }
