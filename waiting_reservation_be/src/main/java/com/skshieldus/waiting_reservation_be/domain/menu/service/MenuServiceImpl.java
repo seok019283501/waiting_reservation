@@ -8,11 +8,14 @@ import com.skshieldus.waiting_reservation_be.db.menu.MenuRepository;
 import com.skshieldus.waiting_reservation_be.db.store.StoreEntity;
 import com.skshieldus.waiting_reservation_be.db.store.StoreRepository;
 import com.skshieldus.waiting_reservation_be.domain.menu.dto.MenuInfoRequest;
+import com.skshieldus.waiting_reservation_be.domain.menu.dto.MenuInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -62,6 +65,28 @@ public class MenuServiceImpl implements MenuService {
                 .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
 
         menuRepository.save(menuEntity);
+    }
+
+    @Override
+    public List<MenuInfoResponse> menuInfo(int storeId) {
+        List<MenuEntity> menuEntity = menuRepository.findAllByStoreId(storeId);
+        List<MenuInfoResponse> responses = menuEntity.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+        return responses;
+    }
+
+    public MenuInfoResponse toResponse(MenuEntity menuEntity){
+        return Optional.ofNullable(menuRepository)
+                .map(it->{
+                    return MenuInfoResponse.builder()
+                            .id(menuEntity.getId())
+                            .storeId(menuEntity.getStoreId())
+                            .title(menuEntity.getTitle())
+                            .description(menuEntity.getDescription())
+                            .cost(menuEntity.getCost())
+                            .build();
+                }).orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
     }
 
 }

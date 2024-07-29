@@ -11,12 +11,14 @@ import com.skshieldus.waiting_reservation_be.db.reserveration.ReservationReposit
 import com.skshieldus.waiting_reservation_be.db.reserveration.enums.ReservationStatus;
 import com.skshieldus.waiting_reservation_be.db.store.StoreRepository;
 import com.skshieldus.waiting_reservation_be.db.store.enums.StoreStatus;
+import com.skshieldus.waiting_reservation_be.domain.order.dto.OrderRequest;
 import com.skshieldus.waiting_reservation_be.domain.order.dto.OrderResponse;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
     private final JwtUtils jwtUtils;
 
     @Override
-    public OrderResponse order(int storeId, int menuId, String authorization) {
+    public List<OrderResponse> order(int storeId, List<OrderRequest> orderRequestList, String authorization) {
         //username
         String token = authorization.substring(7);
         String username = jwtUtils.getSubjectFromToken(token);
@@ -42,22 +44,57 @@ public class OrderServiceImpl implements OrderService {
         Optional.ofNullable(storeRepository.findByIdAndStatus(storeId, StoreStatus.STATUS_ON))
                 .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST,"식당 없음"));
 
-        //menu 유무 확인
-        MenuEntity menuEntity = Optional.ofNullable(menuRepository.findByIdAndDeletedYn(menuId,"N"))
-                .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST,"메뉴 없음"));
+        List<OrderEntity> orderEntityList =  orderRequestList.stream().map(it->{
+            //entity생성
+            return OrderEntity.builder()
+                    .storeId(storeId)
+                    .menuId(it.getId())
+                    .username(username)
+                    .count(it.getCount())
+                    .build();
+        }).collect(Collectors.toList());
 
-        //entity생성
-        OrderEntity entity = OrderEntity.builder()
-                .storeId(storeId)
-                .menuId(menuId)
-                .username(username)
-                .build();
+        List<OrderEntity> newOrderEntityList =  orderEntityList.stream()
+                .map(orderRepository::save)
+                .collect(Collectors.toList());
 
 
-        orderRepository.save(entity);
 
 
-        OrderResponse response = new ModelMapper().map(menuEntity,OrderResponse.class);
+
+        List<OrderResponse> response = newOrderEntityList.stream().map(this::toResponse).collect(Collectors.toList());
         return response;
+    }
+
+    @Override
+    public List<OrderResponse> orderList(int storeId, String username) {
+
+        //웨이팅 예약 확인
+        Optional.ofNullable(reservationRepository
+                        .findByUsernameAndStoreIdAndStatus(username, storeId, ReservationStatus.STATUS_PROCESSING))
+                .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST,"예약하지 않았습니다."));
+
+        //store 유무 확인
+        Optional.ofNullable(storeRepository.findByIdAndStatus(storeId, StoreStatus.STATUS_ON))
+                .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST,"식당 없음"));
+
+        List<OrderEntity> orderEntity = orderRepository.findAllByUsernameAndStoreId(username,storeId);
+        List<OrderResponse> response = orderEntity.stream().map(this::toResponse)
+                .collect(Collectors.toList());
+        return response;
+    }
+
+
+    public OrderResponse toResponse(OrderEntity entity){
+
+        MenuEntity menuEntity = menuRepository.findById(entity.getMenuId());
+
+        return OrderResponse.builder()
+                .title(menuEntity.getTitle())
+                .name(entity.getUsername())
+                .description(menuEntity.getDescription())
+                .count(entity.getCount())
+                .cost(menuEntity.getCost()*entity.getCount())
+                .build();
     }
 }

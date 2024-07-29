@@ -1,4 +1,5 @@
-package com.skshieldus.waiting_reservation_be.domain.order.dto;
+package com.skshieldus.waiting_reservation_be.domain.menu.dto;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,13 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class OrderResponse {
+public class MenuInfoResponse {
+    private int id;
+    private int storeId;
     private String title;
-    private String name;
     private String description;
-    private int count;
     private int cost;
 }

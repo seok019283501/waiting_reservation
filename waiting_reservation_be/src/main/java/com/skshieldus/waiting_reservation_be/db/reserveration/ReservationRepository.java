@@ -10,4 +10,5 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity,I
 
     ReservationEntity findByIdAndStoreIdAndStatus(int reservationId, int storeId, ReservationStatus status);
     ReservationEntity findByUsernameAndStoreIdAndStatus(String username, int storeId, ReservationStatus status);
+    ReservationEntity findByUsernameAndStatus(String username, ReservationStatus status);
 }

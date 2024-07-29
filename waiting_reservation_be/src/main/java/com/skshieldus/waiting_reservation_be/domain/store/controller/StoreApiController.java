@@ -27,4 +27,11 @@ public class StoreApiController {
         return Api.OK(response);
     }
 
+    //사업자 식당 검색
+    @GetMapping("/search")
+    public Api<List<StoreInfoResponse>> storeSearch(@RequestParam(name = "store_name",defaultValue = "none") String storeName , @RequestParam(defaultValue = "all") String address, @RequestHeader("Authorization") String authorization){
+        List<StoreInfoResponse> response = storeService.storeOwnerSearch(storeName,address,authorization);
+        return Api.OK(response);
+    }
+
 }

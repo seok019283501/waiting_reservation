@@ -17,10 +17,13 @@ import java.util.List;
 public class AdminApiController {
     private final AdminService adminService;
 
-    //식당 등록 허가
+    //식당 등록
     @PutMapping("/store/{storeId}")
-    public Api<String> storeStatusChange(@PathVariable int storeId){
-        adminService.storeStatusChange(storeId);
+    public Api<String> storeStatusChange(
+            @PathVariable int storeId,
+            @RequestParam StoreStatus status
+    ){
+        adminService.storeStatusChange(storeId,status);
         return Api.OK("success");
     }
     @GetMapping("/list/{type}")

@@ -1,7 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 import '../../styles/StoreListItem.css'
+import WaitingReservationContext from "../provider/WaitingReservationContext";
 import axios from "axios";
 const StoreListItem = (props) =>{
+  const {role} = useContext(WaitingReservationContext);
+
+  const navigator = useNavigate();
+
+  //예약 유무
   const [status,setStatus] = useState(false);
   //예약
   const reservation = () =>{
@@ -18,10 +25,18 @@ const StoreListItem = (props) =>{
     })
   }
 
-  //예약 유무 확인
+  
   useEffect(()=>{
+    if(role !== "ROLE_OWNER"){
+      reservationStatus();
+
+    }
+  },[])
+
+  //예약 유무 확인
+  const reservationStatus=()=>{
     const tk = localStorage.getItem("jwt")
-    axios.get((`http://localhost:8080/api/reservation/remain/${props.item.id}`),{
+    axios.get((`http://localhost:8080/api/reservation/info/${props.item.id}`),{
       headers:{
         Authorization: tk
       }
@@ -31,7 +46,7 @@ const StoreListItem = (props) =>{
     }).catch(err=>{
       console.log(err);
     })
-  },[])
+  }
   
   return (
     <>
@@ -46,7 +61,11 @@ const StoreListItem = (props) =>{
             </div>
           </div>
           <div className="StoreListItem-reservation-container">
-            <input type='button' disabled={status} className='reservation-btn' onClick={reservation} value={status ? "예약중" : "예약"}/>
+            {
+              role !== "ROLE_OWNER" ? 
+              <input type='button' disabled={status} className='reservation-btn' onClick={reservation} value={status ? "예약중" : "예약"}/>
+              :  <input type='button' className='reservation-btn' onClick={()=>navigator("waiting/list",{state:{id:props.item.id}})} value={"목록"}/>
+            }
           </div>
         </div>
       </div>

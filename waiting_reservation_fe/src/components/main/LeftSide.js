@@ -1,7 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "../../styles/LeftSide.css"
+import { useNavigate } from "react-router-dom";
+import WaitingReservationContext from "../provider/WaitingReservationContext";
 const LeftSide = (props) =>{
+
+  const {insertRole, role} = useContext(WaitingReservationContext);
   //토큰
   const [token,setToken] = useState("");
   //user 아이디
@@ -9,11 +13,16 @@ const LeftSide = (props) =>{
   const [password,setPassword] = useState("")
   //user 이름
   const [name, setName] = useState("");
+  //역할
+
+  const navigator = useNavigate();
 
   //로그아웃
   const logout = ()=>{
     setName("");
     setToken("");
+    insertRole("ROLE_USER");
+    navigator("/");
     localStorage.removeItem("jwt")
   }
   //아이디 입력
@@ -33,6 +42,10 @@ const LeftSide = (props) =>{
       const tk = `Bearer ${res.data.body.token}`
       localStorage.setItem("jwt",tk);
       setToken(tk);
+      insertRole(res.data.body.role);
+      if(res.data.body.role === "ROLE_OWNER"){
+        console.log("ROLE_OWNER")
+      }
     }).catch(err=>{
       console.log(err);
     })
@@ -50,11 +63,13 @@ const LeftSide = (props) =>{
     }).then(res=>{
       console.log(res)
       setName(res.data.body.name);
+      insertRole(res.data.body.role);
     }).catch(err=>{
       console.log(err);
     })
     
   },[])
+
 
   return (
     <>
@@ -86,7 +101,6 @@ const LeftSide = (props) =>{
                 </div>
               </>
                 
-                
               )
             }
             
@@ -94,7 +108,14 @@ const LeftSide = (props) =>{
           <div className="LeftSide-menu-continer">
             <div className="LeftSide-menu-continer">
               <div>mypage</div>
-              <div>웨이팅 정보</div>
+              {
+                role === "ROLE_USER" ? <div onClick={()=>{navigator('/waiting')}}>웨이팅 정보</div> : null
+              }
+              {
+                role === "ROLE_OWNER" ? <div onClick={()=>{navigator('/store/regist')}}>식당 등록</div> : null
+              }
+              
+              
             </div>
           </div>
           

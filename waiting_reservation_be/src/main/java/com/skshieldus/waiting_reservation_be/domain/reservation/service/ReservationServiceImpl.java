@@ -3,11 +3,14 @@ package com.skshieldus.waiting_reservation_be.domain.reservation.service;
 import com.skshieldus.waiting_reservation_be.common.error.ErrorCode;
 import com.skshieldus.waiting_reservation_be.common.exception.ApiException;
 import com.skshieldus.waiting_reservation_be.common.utils.JwtUtils;
+import com.skshieldus.waiting_reservation_be.db.order.OrderRepository;
 import com.skshieldus.waiting_reservation_be.db.reserveration.ReservationEntity;
 import com.skshieldus.waiting_reservation_be.db.reserveration.ReservationRepository;
 import com.skshieldus.waiting_reservation_be.db.reserveration.enums.ReservationStatus;
 import com.skshieldus.waiting_reservation_be.db.store.StoreRepository;
 import com.skshieldus.waiting_reservation_be.db.store.enums.StoreStatus;
+import com.skshieldus.waiting_reservation_be.db.user.UserEntity;
+import com.skshieldus.waiting_reservation_be.db.user.UserRepository;
 import com.skshieldus.waiting_reservation_be.domain.reservation.dto.ReservationRemainResponse;
 import com.skshieldus.waiting_reservation_be.domain.reservation.dto.ReservationResponse;
 import io.jsonwebtoken.Claims;
@@ -25,6 +28,8 @@ import java.util.stream.Collectors;
 public class ReservationServiceImpl implements ReservationService{
     private final ReservationRepository reservationRespository;
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
     private final JwtUtils jwtUtils;
     //웨이팅 예약
     @Override
@@ -39,7 +44,7 @@ public class ReservationServiceImpl implements ReservationService{
 
         //중복 예약 확인
         ReservationEntity entity = reservationRespository
-                .findByUsernameAndStoreIdAndStatus(username,storeId,ReservationStatus.STATUS_PROCESSING);
+                .findByUsernameAndStatus(username,ReservationStatus.STATUS_PROCESSING);
         if(entity != null){
             throw new ApiException(ErrorCode.BAD_REQUEST,"이미 예약 중 입니다.");
         }
@@ -95,7 +100,7 @@ public class ReservationServiceImpl implements ReservationService{
         String username = jwtUtils.getSubjectFromToken(token);
         //store 유무 확인
         Optional.ofNullable(storeRepository.findByIdAndUsernameAndStatus(storeId,username,StoreStatus.STATUS_ON))
-                .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
+                .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST,"식당 없음"));
 
 
         ReservationEntity entity =
@@ -105,13 +110,15 @@ public class ReservationServiceImpl implements ReservationService{
                         ReservationStatus.STATUS_PROCESSING))
                         .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
 
+        orderRepository.deleteOrder(entity.getUsername());
+
         entity.setStatus(ReservationStatus.STATUS_COMPLETED);
         reservationRespository.save(entity);
     }
 
     //남은 웨이팅 확인
     @Override
-    public ReservationResponse remain(int storeId, String authorization) {
+    public ReservationResponse info(String authorization) {
         //username
         String token = authorization.substring(7);
         String username = jwtUtils.getSubjectFromToken(token);
@@ -119,29 +126,48 @@ public class ReservationServiceImpl implements ReservationService{
 
         //웨이팅 확인
         ReservationEntity entity = Optional.ofNullable(reservationRespository
-                        .findByUsernameAndStoreIdAndStatus(username,storeId,ReservationStatus.STATUS_PROCESSING))
+                        .findByUsernameAndStatus(username,ReservationStatus.STATUS_PROCESSING))
                         .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST,"웨이팅 중이 아닙니다."));
 
         //식당 남은 인원 검색
         List<ReservationEntity> reservationEntityList = reservationRespository
-                .findAllByStoreIdAndStatus(storeId,ReservationStatus.STATUS_PROCESSING);
+                .findAllByStoreIdAndStatus(entity.getStoreId(),ReservationStatus.STATUS_PROCESSING);
         //user 순서까지의 수
         int count = reservationEntityList.indexOf(entity)+1;
 
         ReservationResponse response = new ModelMapper().map(entity,ReservationResponse.class);
+        response.setName(name);
         response.setRemainingCount(count);
 
         return response;
     }
 
+    @Override
+    public void check(int storeId, String authorization) {
+        //username
+        String token = authorization.substring(7);
+        String username = jwtUtils.getSubjectFromToken(token);
+        String name = jwtUtils.getNameFromToken(token);
+
+        //웨이팅 확인
+        Optional.ofNullable(reservationRespository
+                        .findByUsernameAndStoreIdAndStatus(username,storeId,ReservationStatus.STATUS_PROCESSING))
+                .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST,"웨이팅 중이 아닙니다."));
+    }
+
     //response 전환
     public ReservationRemainResponse toResponse(ReservationEntity entity){
+
+        UserEntity userEntity = userRepository.findByUsername(entity.getUsername());
+
         return Optional.ofNullable(entity)
                 .map(it->{
                     return ReservationRemainResponse.builder()
                             .id(entity.getId())
+                            .name(entity.getUsername())
                             .username(entity.getUsername())
                             .storeId(entity.getStoreId())
+                            .phoneNumber(userEntity.getPhoneNumber())
                             .status(entity.getStatus())
                             .createdAt(entity.getCreatedAt())
                             .build();
