@@ -6,8 +6,8 @@ import StoreListItem from './StoreListItem';
 import WaitingReservationContext from "../provider/WaitingReservationContext";
 import { useNavigate } from 'react-router-dom';
 const StoreList = (props) =>{
-  const list = ["전체","서울특별시","경기도","인천광역시","충청남도","충청북도","대전광역시",
-    "강원도","제주도","전라북도","전라남도","광주광역시","경상북도","경상남도","부산광역시","울산광역시"];
+  const list = ["전체","서울특별시","경기도","인천광역시","충남","충북","대전광역시",
+    "강원도","제주도","전북","전남","광주광역시","경북","경남","부산광역시","울산광역시"];
 
   const [address, setAddress] = useState("전체");
   const [storeName, setStoreName] = useState("");

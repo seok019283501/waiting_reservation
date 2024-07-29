@@ -86,7 +86,7 @@ const LeftSide = (props) =>{
                   <div className="login-btn">로그인</div>
                 </div>
                 <div className="LeftSide-register-container">
-                  <div>회원가입</div>
+                  <div onClick={()=>navigator("/regist")}>회원가입</div>
                 </div>
               </>
                 
