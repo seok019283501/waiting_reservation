@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import '../../styles/StoreRegist.css'
-import { useDaumPostcodePopup } from "react-daum-postcode";
 import WaitingReservationContext from "../provider/WaitingReservationContext";
 import axios from "axios";
 const StoreRegist = (props) =>{
@@ -11,14 +10,7 @@ const StoreRegist = (props) =>{
   const [address, setAddress] = useState("");
   const navigator = useNavigate();
 
-  const open = useDaumPostcodePopup("https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js");
-  
 
-  const handleSetStoreName = (e) =>{
-    setStoreName(e.target.value);
-  }
-
-  //식당 예약
   const registStore=()=>{
     const tk = localStorage.getItem("jwt")
     axios.post((`http://localhost:8080/api/store/owner/register`),{

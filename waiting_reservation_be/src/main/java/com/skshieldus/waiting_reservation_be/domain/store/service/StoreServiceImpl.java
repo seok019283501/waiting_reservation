@@ -35,8 +35,10 @@ public class StoreServiceImpl implements StoreService{
         StoreEntity entity = new ModelMapper().map(request, StoreEntity.class);
         String token = authorization.substring(7);
         String username = jwtUtils.getSubjectFromToken(token);
+        //사업자 유무 확인
         Optional.ofNullable(userRepository.findByUsernameAndRole(username, Role.ROLE_OWNER))
                 .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
+
         entity.setUsername(username);
         entity.setCreatedAt(LocalDateTime.now());
         entity.setStatus(StoreStatus.STATUS_OFF);

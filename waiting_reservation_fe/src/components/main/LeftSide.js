@@ -43,9 +43,7 @@ const LeftSide = (props) =>{
       localStorage.setItem("jwt",tk);
       setToken(tk);
       insertRole(res.data.body.role);
-      if(res.data.body.role === "ROLE_OWNER"){
-        console.log("ROLE_OWNER")
-      }
+      console.log("asdff")
     }).catch(err=>{
       console.log(err);
     })
@@ -64,6 +62,7 @@ const LeftSide = (props) =>{
       console.log(res)
       setName(res.data.body.name);
       insertRole(res.data.body.role);
+      console.log("asdff")
     }).catch(err=>{
       console.log(err);
     })
