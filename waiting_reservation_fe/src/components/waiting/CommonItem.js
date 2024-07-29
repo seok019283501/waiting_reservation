@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const CommonItem = (props) =>{
   const navigator = useNavigate();
   const {role,waitingUserList,handleSetOrderMenuList} = useContext(WaitingReservationContext);
-  const [count,setCount] = useState("");
+  const [count,setCount] = useState(1);
   console.log(props)
   // ------------------
   // user
@@ -80,7 +80,7 @@ const CommonItem = (props) =>{
           <div className="CommonItem-reservation-container">
             {
               role !== "ROLE_OWNER" ? 
-                <input type="number" onChange={handleCount} className='menu-order-count'/>
+                <input type="number" onChange={handleCount} value={count} className='menu-order-count'/>
               : null
             }
             <input type='button' className='menu-btn' onClick={role !== "ROLE_OWNER" ? orderMenu : allow} value={role !== "ROLE_OWNER" ? "추가" : "허용"}/>

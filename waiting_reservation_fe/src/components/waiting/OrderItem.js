@@ -4,7 +4,6 @@ import {useContext, useState} from 'react';
 import WaitingReservationContext from "../provider/WaitingReservationContext";
 import { useNavigate } from "react-router-dom";
 const OrderItem = (props) =>{
-  console.log(props)
 
 
   return (
