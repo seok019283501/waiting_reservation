@@ -45,6 +45,10 @@
   width: 100%;
 }
 .StoreList-list-container{
+  
+  height: 400px;
+}
+.StoreList-list-sub-container{
   overflow: scroll;
-  height: 600px;
+  height: 400px;
 }

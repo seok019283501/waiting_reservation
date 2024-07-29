@@ -39,6 +39,7 @@ const StoreList = (props) =>{
   }
 
   useEffect(()=>{
+    console.log(role)
     if(role === "ROLE_OWNER"){
       ownerStoreSearch();
     }else if(role === "ROLE_ADMIN"){

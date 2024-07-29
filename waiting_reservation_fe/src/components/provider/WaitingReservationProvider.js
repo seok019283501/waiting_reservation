@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import WaitingReservationContext from "./WaitingReservationContext";
 import axios from "axios";
 const WaitingReservationProvider = (props) =>{
-  const [role,setRole] = useState("ROLE_OWNER");
+  const [role,setRole] = useState("ROLE_USER");
   const [reaminCount, setReaminCount] = useState("");
   const [userList,setUserList] = useState([]);
   const [orderMenuList,setOrderMenuList] = useState([]);
