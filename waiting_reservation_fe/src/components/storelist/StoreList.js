@@ -1,10 +1,12 @@
 
-import { useEffect, useState ,useContext} from 'react';
+import { useEffect, useState ,useContext, useRef} from 'react';
 import '../../styles/StoreList.css'
 import axios from "axios";
 import StoreListItem from './StoreListItem';
 import WaitingReservationContext from "../provider/WaitingReservationContext";
 import { useNavigate } from 'react-router-dom';
+import Alerts from "../Alerts";
+import '../../styles/Alerts.css'
 const StoreList = (props) =>{
   const list = ["전체","서울특별시","경기도","인천광역시","충남","충북","대전광역시",
     "강원도","제주도","전북","전남","광주광역시","경북","경남","부산광역시","울산광역시"];
@@ -77,10 +79,42 @@ const StoreList = (props) =>{
       console.log(err);
     })
   }
+
+
+  //알림
+  const [alertContent,setAlertContent] = useState("");
+  //성공
+  const alerSuccesstRef = useRef("");
+
+  const handleSuccessAlert = (data) =>{
+    console.log(data)
+    setAlertContent("예약이 완료되었습니다.")
+    alerSuccesstRef.current.classList.add("visible");
+    setTimeout(()=> {
+      alerSuccesstRef.current.classList.remove("visible");
+    }, 2000);
+  }
+  //실패
+  const alerFailtRef = useRef("");
+
+  const handleFailAlert = (data) =>{
+    console.log(data)
+    if(data.response.status === 403){
+      setAlertContent("로그인을 해주세요.");
+    }else if(data.response.data.result.resultDescription !== null){
+      setAlertContent(data.response.data.result.resultDescription);
+    }
+    alerFailtRef.current.classList.add("visible");
+    setTimeout(()=> {
+      alerFailtRef.current.classList.remove("visible");
+    }, 2000);
+  }
   
   return (
     <>
       <div className="StoreList-container">
+        <Alerts inputRef={alerSuccesstRef} contents={alertContent}/>
+        <Alerts inputRef={alerFailtRef} contents={alertContent}/>
         <div className="StoreList-serch-container">
           <div className="StoreList-serch-input-container">
             <input type="text" className="StoreList-serch" onChange={handleSetStoreName} placeholder="식당 이름을 적어주세요."/>
@@ -102,7 +136,7 @@ const StoreList = (props) =>{
             <div className='StoreList-list-sub-container'>
               {
                 storeList.map((item)=>(
-                  <StoreListItem key={item.id} item={item}/>
+                  <StoreListItem key={item.id} item={item} handleSuccessAlert={handleSuccessAlert} handleFailAlert={handleFailAlert}/>
                 ))
               }
             </div>

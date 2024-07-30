@@ -50,6 +50,7 @@ public class OrderServiceImpl implements OrderService {
                     .storeId(storeId)
                     .menuId(it.getId())
                     .username(username)
+                    .deleteYn("N")
                     .count(it.getCount())
                     .build();
         }).collect(Collectors.toList());
@@ -78,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
         Optional.ofNullable(storeRepository.findByIdAndStatus(storeId, StoreStatus.STATUS_ON))
                 .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST,"식당 없음"));
 
-        List<OrderEntity> orderEntity = orderRepository.findAllByUsernameAndStoreId(username,storeId);
+        List<OrderEntity> orderEntity = orderRepository.findAllByUsernameAndStoreIdAndDeleteYn(username,storeId,"N");
         List<OrderResponse> response = orderEntity.stream().map(this::toResponse)
                 .collect(Collectors.toList());
         return response;

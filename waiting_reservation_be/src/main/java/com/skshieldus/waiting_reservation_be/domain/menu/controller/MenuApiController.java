@@ -17,12 +17,12 @@ public class MenuApiController {
 
 
     @PostMapping("/owner/{storeId}")
-    public Api<String> insertMenu(MenuInfoRequest request, @PathVariable int storeId, @RequestHeader("Authorization") String authorization){
+    public Api<String> insertMenu(@RequestBody MenuInfoRequest request, @PathVariable int storeId, @RequestHeader("Authorization") String authorization){
         menuService.insertMenu(request, storeId,authorization);
         return Api.OK("success");
     }
     @PutMapping("/owner/{storeId}/{menuId}")
-    public Api<String> putMenu(MenuInfoRequest request,@PathVariable int storeId, @PathVariable int menuId, @RequestHeader("Authorization") String authorization){
+    public Api<String> putMenu(@RequestBody MenuInfoRequest request,@PathVariable int storeId, @PathVariable int menuId, @RequestHeader("Authorization") String authorization){
         menuService.putMenu(request,storeId,menuId,authorization);
         return Api.OK("success");
     }

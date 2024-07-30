@@ -11,8 +11,14 @@ spring:
       dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: none
+  servlet:
+    multipart:
+      enabled: true
+      location: /Users/choeminseog/uploads/
+      max-file-size: 10MB
+      max-request-size: 30MB
 
-#database 설정
+  #database 설정
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: jdbc:log4jdbc:mysql://localhost:3306/reservation?useUnicode=true&allowPublicKeyRetrieval=true

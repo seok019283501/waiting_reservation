@@ -16,6 +16,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border-bottom: 1px solid #656565;
 }
 .LeftSide-login-input-continaer{
   display: flex;
@@ -78,4 +79,10 @@
 }
 .LeftSide-logout-button-container:active{
   opacity: .3;
+}
+.LeftSide-register-container div{
+  cursor: pointer;
+}
+.LeftSide-menu-continer div{
+  cursor: pointer;
 }

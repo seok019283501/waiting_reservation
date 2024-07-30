@@ -23,6 +23,5 @@ public class StoreEntity extends BaseEntity {
     private LocalDateTime createdAt;
     private LocalDateTime openAt;
     private String address;
-    private String businessRegistrationUrl;
 
 }

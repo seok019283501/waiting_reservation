@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import WaitingReservationContext from "../provider/WaitingReservationContext";
 const LeftSide = (props) =>{
 
-  const {insertRole, role} = useContext(WaitingReservationContext);
+  const {insertRole, role,handleUsername} = useContext(WaitingReservationContext);
   //토큰
   const [token,setToken] = useState("");
   //user 아이디
@@ -22,8 +22,11 @@ const LeftSide = (props) =>{
     setName("");
     setToken("");
     insertRole("ROLE_USER");
+    handleUsername("");
     navigator("/");
     localStorage.removeItem("jwt")
+    window.location.reload();
+
   }
   //아이디 입력
   const insertId = (e) => {
@@ -41,9 +44,10 @@ const LeftSide = (props) =>{
       setName(res.data.body.name);
       const tk = `Bearer ${res.data.body.token}`
       localStorage.setItem("jwt",tk);
+      handleUsername(res.data.body.username,res.data.body.name);
       setToken(tk);
       insertRole(res.data.body.role);
-      console.log("asdff")
+      window.location.reload();
     }).catch(err=>{
       console.log(err);
     })
@@ -61,6 +65,7 @@ const LeftSide = (props) =>{
     }).then(res=>{
       console.log(res)
       setName(res.data.body.name);
+      handleUsername(res.data.body.username,res.data.body.name);
       insertRole(res.data.body.role);
       console.log("asdff")
     }).catch(err=>{

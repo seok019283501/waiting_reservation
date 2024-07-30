@@ -11,7 +11,7 @@ const Order = (props) =>{
   //총가격
   const [totalCost, setTotalCost] = useState(0);
 
-
+  console.log(location.state)
   useEffect(()=>{
     order();
   },[])

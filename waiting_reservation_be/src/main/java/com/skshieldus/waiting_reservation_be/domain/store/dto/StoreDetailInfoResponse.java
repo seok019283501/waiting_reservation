@@ -16,5 +16,4 @@ public class StoreDetailInfoResponse {
     private String address;
     private LocalDateTime createdAt;
     private LocalDateTime openAt;
-    private String businessRegistrationUrl;
 }

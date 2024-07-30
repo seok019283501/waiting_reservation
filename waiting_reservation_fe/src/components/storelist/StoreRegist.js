@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import '../../styles/StoreRegist.css'
 import { useDaumPostcodePopup } from "react-daum-postcode";
@@ -18,16 +18,58 @@ const StoreRegist = (props) =>{
     setStoreName(e.target.value);
   }
 
-  //식당 예약
+
+  
+
+  const handleComplete = (data) => {
+    console.log(data)
+    setAddress(data.address);
+  }
+  const selectAddress = (e) => {
+    open({ onComplete: handleComplete });
+  }
+
+  // 파일 선택창을 직접 제어하기 위해 ref 객체 변수를 정의
+  const refFiles = useRef();
+
+  // 업로드할 파일 데이터를 저장할 상태변수와 이벤트 핸들러
+  const [file, setFile] = useState("");
+  const handlerChangeFiles = e => {
+    const file = e.target.files;
+
+    if (file.length > 1) {
+        alert('이미지는 1개만 업로드 가능합니다.');
+        refFiles.current.value = '';
+        setFile("");
+        return;
+    }
+    console.log(file[0])
+
+    setFile(file[0]);
+  };
+  
+
+
+  //식당 등록
   const registStore=()=>{
     const tk = localStorage.getItem("jwt")
-    axios.post((`http://localhost:8080/api/store/owner/register`),{
-      storeName: storeName,
-      businessRegistrationUrl: "string",
-      address: address
-    },{
+    // 서버로 전달할 입력창 내용을 객체로 정의 (단축 속성명)
+    let datas = { storeName,address };
+
+    // FormData 변수에 서버로 전달할 입력창의 내용을 data 이름으로 설정
+    const formData = new FormData();
+
+    formData.append('data', new Blob([JSON.stringify(datas)], { type: 'application/json' }));
+    // 첨부 파일을 files 이름으로 추가
+    formData.append('file', file)
+    console.log(formData)
+    console.log(formData.get('file'))
+    axios.post((`http://localhost:8080/api/store/owner/register`),
+      formData
+    ,{
       headers:{
-        Authorization: tk
+        Authorization: tk,
+        'Content-Type' : 'multipart/form-data'
       }
     }).then(res=>{
       console.log(res)
@@ -37,13 +79,7 @@ const StoreRegist = (props) =>{
     })
   }
 
-  const handleComplete = (data) => {
-    console.log(data)
-    setAddress(data.address);
-  }
-  const selectAddress = (e) => {
-    open({ onComplete: handleComplete });
-  }
+
   
   return (
     <>
@@ -69,7 +105,7 @@ const StoreRegist = (props) =>{
               <div className='StoreRegist-info-file-container'>
                 <div className='StoreRegist-info-file-sub-container'>
                   <label htmlFor='store-name'>사업자 등록증</label>
-                  <input type='file' name='business-registration' className='StoreRegist-business-registration-input'/>
+                  <input ref={refFiles} type='file' name='business-registration' onChange={handlerChangeFiles} className='StoreRegist-business-registration-input'/>
                 </div>
               </div>
               <div className='StoreRegist-btn-container'>

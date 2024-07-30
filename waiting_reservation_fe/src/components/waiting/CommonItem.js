@@ -3,20 +3,23 @@ import '../../styles/CommonItem.css'
 import {useContext, useState} from 'react';
 import WaitingReservationContext from "../provider/WaitingReservationContext";
 import { useNavigate } from "react-router-dom";
+import Alerts from "../Alerts";
 const CommonItem = (props) =>{
   const navigator = useNavigate();
   const {role,waitingUserList,handleSetOrderMenuList} = useContext(WaitingReservationContext);
   const [count,setCount] = useState(1);
-  console.log(props)
+  const [readyAlert,setReadyAlert] = useState(false);
   // ------------------
   // user
   const orderMenu = () =>{
 
     const menu = {
       id:props.item.id,
-      count:count
+      count:count,
+      title:props.item.title
     }
     handleSetOrderMenuList(menu);
+    
   }
 
   const handleCount=(e)=>{
@@ -35,8 +38,10 @@ const CommonItem = (props) =>{
       }
     }).then(res=>{
       console.log(res)
+      props.handleSuccessAlert(res,props.item.name);
     }).catch(err=>{
       console.log(err);
+      props.handleFailAlert(err);
     })
     setTimeout(()=>{
       waitingUserList(props.item.storeId);

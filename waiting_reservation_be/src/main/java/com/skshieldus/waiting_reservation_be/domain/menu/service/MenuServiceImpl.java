@@ -63,13 +63,13 @@ public class MenuServiceImpl implements MenuService {
         }
         MenuEntity menuEntity = Optional.ofNullable(menuRepository.findById(menuId))
                 .orElseThrow(()->new ApiException(ErrorCode.BAD_REQUEST));
-
+        menuEntity.setDeletedYn("Y");
         menuRepository.save(menuEntity);
     }
 
     @Override
     public List<MenuInfoResponse> menuInfo(int storeId) {
-        List<MenuEntity> menuEntity = menuRepository.findAllByStoreId(storeId);
+        List<MenuEntity> menuEntity = menuRepository.findAllByStoreIdAndDeletedYn(storeId,"N");
         List<MenuInfoResponse> responses = menuEntity.stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());

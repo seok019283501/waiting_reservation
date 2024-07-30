@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<OrderEntity,Integer> {
-    List<OrderEntity> findAllByUsernameAndStoreId(String username,int storeId);
+    List<OrderEntity> findAllByUsernameAndStoreIdAndDeleteYn(String username,int storeId,String deleteYn);
     List<OrderEntity> findAllByStoreId(int storeId);
 
     @Modifying

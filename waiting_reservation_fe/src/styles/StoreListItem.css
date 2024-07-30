@@ -44,6 +44,8 @@
   width: 50%;
   height: 40%;
   font-size: 1.2rem;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 .reservation-btn:active{
   opacity: .3;

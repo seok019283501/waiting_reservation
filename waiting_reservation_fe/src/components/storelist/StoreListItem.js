@@ -19,9 +19,11 @@ const StoreListItem = (props) =>{
       }
     }).then(res=>{
       console.log(res)
+      props.handleSuccessAlert(res);
       setStatus(true);
     }).catch(err=>{
       console.log(err);
+      props.handleFailAlert(err);
     })
   }
 
@@ -64,7 +66,10 @@ const StoreListItem = (props) =>{
             {
               role !== "ROLE_OWNER" ? 
               <input type='button' disabled={status} className='reservation-btn' onClick={reservation} value={status ? "예약중" : "예약"}/>
-              :  <input type='button' className='reservation-btn' onClick={()=>navigator("waiting/list",{state:{id:props.item.id}})} value={"목록"}/>
+              :<>
+                <input type='button' className='reservation-btn' onClick={()=>navigator("waiting/list",{state:{id:props.item.id}})} value={"목록"}/>
+                <input type='button' className='reservation-btn' onClick={()=>navigator("/menu/add",{state:{storeId:props.item.id}})} value={"메뉴 추가"}/>
+              </>  
             }
           </div>
         </div>

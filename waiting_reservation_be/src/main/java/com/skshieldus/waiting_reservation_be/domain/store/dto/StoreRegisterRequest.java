@@ -10,6 +10,5 @@ import java.time.LocalDateTime;
 @Data
 public class StoreRegisterRequest {
     private String storeName;
-    private String businessRegistrationUrl;
     private String address;
 }

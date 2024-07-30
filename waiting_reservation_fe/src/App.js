@@ -7,6 +7,7 @@ import Order from "./components/waiting/Order";
 import AdminStoreList from "./components/admin/AdminStoreList";
 import StoreRegist from "./components/storelist/StoreRegist";
 import UserRegist from "./components/user/UserRegist";
+import MenuAdd from "./components/menu/MenuInsert";
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="admin/store" element={<AdminStoreList/>}/>
             <Route path="/store/regist" element={<StoreRegist/>}/>
             <Route path="/regist" element={<UserRegist/>}/>
+            <Route path="/menu/add" element={<MenuAdd/>}/>
           </Routes>
         </WaitingReservationTemplete>
       </Router>

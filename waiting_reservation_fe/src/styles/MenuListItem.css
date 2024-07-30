@@ -1,47 +1,49 @@
-.AdminStoreListItem-container{
+.MenuListItem-container{
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100px;
 }
-.AdminStoreListItem-main-container{
+.MenuListItem-main-container{
   background-color: #ffffff;
   display: grid;
-  grid-template-columns: 80% 20%;
+  grid-template-columns: 79% 20%;
+  grid-column-gap: 1%;
   width: 90%;
   height: 80%;
   box-shadow: 0px 0px 3px #656565;
 }
-.AdminStoreListItem-info-container{
+.MenuListItem-info-container{
   display: grid;
   grid-template-rows: 1 1;
   margin-left: 10px;
   margin-right: 10px;
+  width: 100%;
 }
-.AdminStoreListItem-store-name-container{
+.MenuListItem-menu-name-container{
   display: flex;
   align-items: center;
   border-bottom: 1px solid black;
+  
 }
-.AdminStoreListItem-store-name-container :nth-child(2){
-  margin-left: 10px;
-}
-.AdminStoreListItem-addresse-container{
+.MenuListItem-addresse-container{
   display: flex;
   align-items: center;
 }
-.AdminStoreListItem-addresse-container a{
-  cursor: pointer;
-  color: rgb(49, 49, 255);
-  margin-left: 10px;
-}
-.AdminStoreListItem-status-container{
+.MenuListItem-reservation-container{
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.status-btn{
+
+.MenuListItem-btn-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.MenuListItem-btn-container .add-btn{
   background-color: #C3C8D4;
   font-weight: 600;
   color: aliceblue;
@@ -51,12 +53,14 @@
   cursor: pointer;
   width: 50%;
   height: 40%;
-  font-size: 1.2rem;
+  font-size: 1.0rem;
+  margin-left: 5px;
+  margin-right: 5px;
 }
-.status-btn:active{
+.MenuListItem-btn-container .add-btn:active{
   opacity: .3;
 }
-.status-btn:disabled{
+.MenuListItem-btn-container .add-btn:disabled{
   background: #ddd;
   color: #bbb;
   border: 1px solid #ddd;
