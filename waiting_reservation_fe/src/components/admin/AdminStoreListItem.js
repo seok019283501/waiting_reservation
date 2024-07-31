@@ -1,7 +1,5 @@
 import { useEffect, useState, useContext, useCallback } from 'react';
-import { useNavigate } from "react-router-dom";
 import '../../styles/AdminStoreListItem.css'
-import WaitingReservationContext from "../provider/WaitingReservationContext";
 import axios from "axios";
 const AdminStoreListItem = (props) =>{
 
@@ -15,7 +13,6 @@ const AdminStoreListItem = (props) =>{
         Authorization: tk
       }
     }).then(res=>{
-      console.log(res)
       props.openSearch();
     }).catch(err=>{
       console.log(err);
@@ -34,7 +31,6 @@ const AdminStoreListItem = (props) =>{
         Authorization: tk
       }
     }).then(res=>{
-      console.log(res)
       setOriginalFileName(res.data.body.originalFileName);
       setState(true)
     }).catch(err=>{
@@ -51,7 +47,6 @@ const AdminStoreListItem = (props) =>{
         Authorization: tk
       }
     }).then(res=>{
-      console.log(res)
       const data = res.data;
       const href = URL.createObjectURL(data);
       const link = document.createElement('a');

@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useRef } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import '../../styles/StoreRegist.css'
 import { useDaumPostcodePopup } from "react-daum-postcode";
@@ -22,7 +22,6 @@ const StoreRegist = (props) =>{
   
 
   const handleComplete = (data) => {
-    console.log(data)
     setAddress(data.address);
   }
   const selectAddress = (e) => {
@@ -43,7 +42,6 @@ const StoreRegist = (props) =>{
         setFile("");
         return;
     }
-    console.log(file[0])
 
     setFile(file[0]);
   };
@@ -62,8 +60,6 @@ const StoreRegist = (props) =>{
     formData.append('data', new Blob([JSON.stringify(datas)], { type: 'application/json' }));
     // 첨부 파일을 files 이름으로 추가
     formData.append('file', file)
-    console.log(formData)
-    console.log(formData.get('file'))
     axios.post((`http://localhost:8080/api/store/owner/register`),
       formData
     ,{
@@ -72,7 +68,6 @@ const StoreRegist = (props) =>{
         'Content-Type' : 'multipart/form-data'
       }
     }).then(res=>{
-      console.log(res)
       navigator("/");
     }).catch(err=>{
       console.log(err);

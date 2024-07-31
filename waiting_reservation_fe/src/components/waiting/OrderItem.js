@@ -1,8 +1,4 @@
-import axios from "axios";
 import '../../styles/OrderItem.css'
-import {useContext, useState} from 'react';
-import WaitingReservationContext from "../provider/WaitingReservationContext";
-import { useNavigate } from "react-router-dom";
 const OrderItem = (props) =>{
 
 

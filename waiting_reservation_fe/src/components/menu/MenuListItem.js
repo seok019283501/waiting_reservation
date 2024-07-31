@@ -1,8 +1,5 @@
 import axios from "axios";
 import '../../styles/MenuListItem.css'
-import {useContext, useState} from 'react';
-import WaitingReservationContext from "../provider/WaitingReservationContext";
-import { useNavigate } from "react-router-dom";
 const MenuListItem = (props) =>{
 
     //메뉴 삭제
@@ -14,7 +11,6 @@ const MenuListItem = (props) =>{
         }
       })
       .then(res=>{
-        console.log(res);
         window.location.reload();
       }).catch(err=>{
         console.log(err);

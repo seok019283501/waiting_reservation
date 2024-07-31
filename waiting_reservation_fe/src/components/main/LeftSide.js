@@ -63,11 +63,9 @@ const LeftSide = (props) =>{
         Authorization: tk
       }
     }).then(res=>{
-      console.log(res)
       setName(res.data.body.name);
       handleUsername(res.data.body.username,res.data.body.name);
       insertRole(res.data.body.role);
-      console.log("asdff")
     }).catch(err=>{
       console.log(err);
     })

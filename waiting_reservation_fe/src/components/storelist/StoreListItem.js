@@ -18,7 +18,6 @@ const StoreListItem = (props) =>{
         Authorization: tk
       }
     }).then(res=>{
-      console.log(res)
       props.handleSuccessAlert(res);
       setStatus(true);
     }).catch(err=>{
@@ -43,7 +42,6 @@ const StoreListItem = (props) =>{
         Authorization: tk
       }
     }).then(res=>{
-      console.log(res)
       setStatus(true);
     }).catch(err=>{
       console.log(err);

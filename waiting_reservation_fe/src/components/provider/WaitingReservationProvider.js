@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import WaitingReservationContext from "./WaitingReservationContext";
 import axios from "axios";
 import Alerts from "../Alerts";
@@ -25,7 +25,6 @@ const WaitingReservationProvider = (props) =>{
         Authorization: tk
       }
     }).then(res=>{
-      console.log(res)
       setUserList(res.data.body);
       setReaminCount(res.data.body.length);
     }).catch(err=>{
@@ -41,7 +40,6 @@ const WaitingReservationProvider = (props) =>{
     orderMenuList.push(item);
     setOrderMenuList(orderMenuList);
     handleMenuAddAlert(item)
-    console.log(orderMenuList)
   }
   const handleResetOrderMenuList = ()=>{
     setOrderMenuList([]);

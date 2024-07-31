@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate,useLocation } from "react-router-dom";
 import '../../styles/MenuInsert.css'
-import { useDaumPostcodePopup } from "react-daum-postcode";
 import WaitingReservationContext from "../provider/WaitingReservationContext";
 import axios from "axios";
 import MenuListItem from './MenuListItem';
@@ -103,8 +102,8 @@ const MenuInsert = (props) =>{
           <div className='MenuInsert-right-container'>
             <div className='MenuInsert-right-sub-container'>
               {
-                menuList.map((item)=>(
-                  <MenuListItem item={item}/>
+                menuList.map((item, index)=>(
+                  <MenuListItem key={index} item={item}/>
                 ))
               }
             </div>

@@ -1,7 +1,6 @@
 import { useEffect, useState,useContext, useRef } from 'react';
 import '../../styles/Waiting.css'
 import CommonItem from './CommonItem';
-import axios from "axios";
 import { useLocation } from 'react-router-dom';
 import WaitingReservationContext from "../provider/WaitingReservationContext";
 import Alerts from "../Alerts";
@@ -21,7 +20,6 @@ const WaitingList = (props) =>{
   const alerSuccesstRef = useRef("");
 
   const handleSuccessAlert = (res,name) =>{
-    console.log(res);
     setAlertContent(`${name}님 입장`);
     alerSuccesstRef.current.classList.add("visible");
     setTimeout(()=> {

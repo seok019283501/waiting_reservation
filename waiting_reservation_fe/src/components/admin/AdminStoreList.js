@@ -34,12 +34,9 @@ const AdminStoreList = (props) =>{
 
   //식당 검색
   const search = () => {
-    if(role === "ROLE_OWNER"){
-      console.log("ROLE_OWNER")
-    }else{
+    if(role !== "ROLE_OWNER"){
       openSearch();
     }
-    
     
   }
 
@@ -57,7 +54,6 @@ const AdminStoreList = (props) =>{
       }
     })
     .then(res=>{
-      console.log(res)
       setStoreList(res.data.body);
     }).catch(err=>{
       console.log(err);
@@ -90,8 +86,8 @@ const AdminStoreList = (props) =>{
           <div className='AdminStoreList-serch-select-address-container'>
             <select onChange={handleSetAddress} value={address}>
               {
-                list.map((item)=>(
-                  <option value={item}>
+                list.map((item,index)=>(
+                  <option key={index} value={item}>
                     {item}
                   </option>
                 ))
@@ -99,8 +95,8 @@ const AdminStoreList = (props) =>{
             </select>
             <select onChange={handleSetType} value={type}>
               {
-                typeList.map((item)=>(
-                  <option value={item}>
+                typeList.map((item,index)=>(
+                  <option key={index} value={item}>
                     {item}
                   </option>
                 ))

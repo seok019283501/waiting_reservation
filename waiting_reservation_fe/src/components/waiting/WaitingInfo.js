@@ -20,7 +20,6 @@ const WaitingInfo = (props) =>{
         Authorization: tk
       }
     }).then(res=>{
-      console.log(res)
       setReaminCount(res.data.body.remainingCount);
       setStoreId(res.data.body.storeId)
       menuInfo(res.data.body.storeId);
@@ -36,7 +35,6 @@ const WaitingInfo = (props) =>{
     const tk = localStorage.getItem("jwt")
     axios.get((`http://localhost:8080/open-api/menu/${storeId}`))
     .then(res=>{
-      console.log(res.data.body);
       setMenuList(res.data.body);
     }).catch(err=>{
       console.log(err);
@@ -51,7 +49,6 @@ const WaitingInfo = (props) =>{
         Authorization: tk
       }
     }).then(res=>{
-      console.log(res)
       setReaminCount(res.data.body.remainingCount);
     }).catch(err=>{
       console.log(err);
@@ -65,15 +62,12 @@ const WaitingInfo = (props) =>{
   const alerSuccesstRef = useRef("");
 
   const handleSuccessAlert = (res) =>{
-    console.log(res)
     let price = 0;
     let content = ""
     res.data.body.map(it=>{
         price += it.cost;
-        console.log(it)
         content += `${it.title} : ${it.count}개\n`
       })
-      console.log(content)
     setAlertContent(`${content}\n가격 : ${price}`);
     alerSuccesstRef.current.classList.add("visible");
     setTimeout(()=> {
@@ -84,7 +78,6 @@ const WaitingInfo = (props) =>{
   const alerFailtRef = useRef("");
 
   const handleFailAlert = (data) =>{
-    console.log(data)
     if(data.response !== undefined && data.response.status === 403){
       setAlertContent("로그인을 해주세요.");
     }else if(data.response.data.result.resultDescription !== null){
@@ -106,7 +99,6 @@ const WaitingInfo = (props) =>{
 
   //주문
   const order = (id) =>{
-    console.log(orderMenuList)
     if(orderMenuList.length !== 0){
       const tk = localStorage.getItem("jwt")
       axios.post((`http://localhost:8080/api/order/${id}`),
@@ -126,7 +118,6 @@ const WaitingInfo = (props) =>{
     }
     
   }
-  console.log(username)
 
   return (
     <>

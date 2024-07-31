@@ -3,7 +3,6 @@ import '../../styles/Waiting.css'
 import OrderItem from './OrderItem';
 import axios from "axios";
 import { useLocation } from 'react-router-dom';
-import WaitingReservationContext from "../provider/WaitingReservationContext";
 const Order = (props) =>{
   const location = useLocation();
   //주문 내역
@@ -11,7 +10,6 @@ const Order = (props) =>{
   //총가격
   const [totalCost, setTotalCost] = useState(0);
 
-  console.log(location.state)
   useEffect(()=>{
     order();
   },[])
@@ -24,7 +22,6 @@ const Order = (props) =>{
         Authorization: tk
       }
     }).then(res=>{
-      console.log(res)
       setMenuList(res.data.body);
 
     }).catch(err=>{

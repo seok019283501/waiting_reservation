@@ -3,7 +3,6 @@ import '../../styles/CommonItem.css'
 import {useContext, useState} from 'react';
 import WaitingReservationContext from "../provider/WaitingReservationContext";
 import { useNavigate } from "react-router-dom";
-import Alerts from "../Alerts";
 const CommonItem = (props) =>{
   const navigator = useNavigate();
   const {role,waitingUserList,handleSetOrderMenuList} = useContext(WaitingReservationContext);
@@ -37,7 +36,6 @@ const CommonItem = (props) =>{
         Authorization: tk
       }
     }).then(res=>{
-      console.log(res)
       props.handleSuccessAlert(res,props.item.name);
     }).catch(err=>{
       console.log(err);

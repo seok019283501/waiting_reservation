@@ -31,17 +31,14 @@ const StoreList = (props) =>{
 
   //식당 검색
   const search = () => {
-    if(role === "ROLE_OWNER"){
-      console.log("ROLE_OWNER")
-    }else{
+    if(role !== "ROLE_OWNER"){
       openSearch();
+
     }
-    
     
   }
 
   useEffect(()=>{
-    console.log(role)
     if(role === "ROLE_OWNER"){
       ownerStoreSearch();
     }else if(role === "ROLE_ADMIN"){
@@ -123,8 +120,8 @@ const StoreList = (props) =>{
           <div className='StoreList-serch-select-address-container'>
             <select onChange={handleSetAddress} value={address}>
               {
-                list.map((item)=>(
-                  <option value={item}>
+                list.map((item, index)=>(
+                  <option key={index} value={item}>
                     {item}
                   </option>
                 ))

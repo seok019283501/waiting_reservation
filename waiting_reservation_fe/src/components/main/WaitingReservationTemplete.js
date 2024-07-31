@@ -1,4 +1,3 @@
-import {useRef } from "react";
 import '../../styles/WaitingReservationTemplete.css'
 import LeftSide from "./LeftSide";
 const WaitingReservationTemplete = ({children}) =>{

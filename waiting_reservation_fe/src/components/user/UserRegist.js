@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import '../../styles/UserRegist.css'
-import WaitingReservationContext from "../provider/WaitingReservationContext";
 import axios from "axios";
 const UserRegist = (props) =>{
   const list = ["고객","사업자"];
@@ -22,10 +21,8 @@ const UserRegist = (props) =>{
   
 
   const regist=()=>{
-    console.log(user);
     axios.post((`http://localhost:8080/open-api/user/register/${role}`),user
     ).then(res=>{
-      console.log(res)
       navigator("/");
     }).catch(err=>{
       console.log(err);
