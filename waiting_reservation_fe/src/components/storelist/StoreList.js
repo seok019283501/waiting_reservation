@@ -8,8 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import Alerts from "../Alerts";
 import '../../styles/Alerts.css'
 const StoreList = (props) =>{
-  const list = ["전체","서울","경기도","인천","충남","충북","대전",
-    "강원도","제주도","전북","전남","광주","경북","경남","부산","울산"];
+  const list = ["전체","서울","경기","인천","충남","충북","대전",
+    "강원","제주","전북","전남","광주","경북","경남","부산","울산"];
 
   const [address, setAddress] = useState("전체");
   const [storeName, setStoreName] = useState("");

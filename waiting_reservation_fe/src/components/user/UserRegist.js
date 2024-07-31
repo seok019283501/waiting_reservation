@@ -33,7 +33,7 @@ const UserRegist = (props) =>{
   const handleSetRole = (e) =>{
     if(e.target.value === "고객"){
       setRole("ROLE_USER");
-    }else if(e.target.value === "사업가"){
+    }else{
       setRole("ROLE_OWNER");
     }
   }
