@@ -12,10 +12,7 @@ import com.skshieldus.waiting_reservation_be.db.storefile.StoreFileRepository;
 import com.skshieldus.waiting_reservation_be.db.user.UserEntity;
 import com.skshieldus.waiting_reservation_be.db.user.UserRepository;
 import com.skshieldus.waiting_reservation_be.db.user.enums.Role;
-import com.skshieldus.waiting_reservation_be.domain.store.dto.StoreDetailInfoResponse;
-import com.skshieldus.waiting_reservation_be.domain.store.dto.StoreFileResponse;
-import com.skshieldus.waiting_reservation_be.domain.store.dto.StoreInfoResponse;
-import com.skshieldus.waiting_reservation_be.domain.store.dto.StoreRegisterRequest;
+import com.skshieldus.waiting_reservation_be.domain.store.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -64,15 +61,15 @@ public class StoreServiceImpl implements StoreService{
         entity.setStatus(StoreStatus.STATUS_OFF);
         StoreEntity newEntity=storeRepository.save(entity);
 
-        List<StoreFileEntity> list = fileUtils.parseFileInfo(file,username,newEntity.getId());
-        storeFileRepository.saveAll(list);
+        StoreFileEntity storeFileEntity = fileUtils.parseFileInfo(file,username,newEntity.getId());
+        storeFileRepository.save(storeFileEntity);
     }
 
     //파일 경로
     @Override
-    public StoreFileResponse downloadBusinessRegistration(int storeId) {
+    public StoreFileDto downloadBusinessRegistration(int storeId) {
         StoreFileEntity entity = storeFileRepository.findByStoreId(storeId);
-        StoreFileResponse response = new ModelMapper().map(entity,StoreFileResponse.class);
+        StoreFileDto response = new ModelMapper().map(entity,StoreFileDto.class);
         return response;
     }
 

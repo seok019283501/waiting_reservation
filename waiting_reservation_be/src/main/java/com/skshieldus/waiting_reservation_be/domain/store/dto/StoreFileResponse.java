@@ -8,6 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StoreFileResponse {
-    private String filePath;
     private String originalFileName;
 }
